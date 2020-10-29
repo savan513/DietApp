@@ -1,0 +1,193 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.section .section-heading{
+    font-size:48px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.section .section-heading:after,
+.section .section-heading:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+}
+.section .section-heading:after {
+    height: 2px;
+    background-color: rgba(252, 92, 15, 0.46);
+    left: 25%;
+    right: 25%;
+}
+
+.section .section-heading:before {
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    background-color: #fc5c0f;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: -6px;
+    z-index: 9;
+    border-radius: 50%;
+}
+.card{
+    height: 100%;
+}
+.card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* --------------------------scroll top-------------------------  */
+.scroll-top{
+    bottom: 25px;
+    cursor: pointer;
+    height: 50px;
+    position: fixed;
+    right: 25px;
+    text-align: center;
+    width: 50px;
+    z-index: 9999;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 30%;
+    background-color: #6BCCBA;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5)
+}
+
+.scroll-top i {
+    line-height: 50px;
+    color: #fff;
+    font-size: 25px;
+}
+
+.scroll-top.not-visible {
+bottom: -50px;
+visibility: hidden;
+opacity: 0;
+}
+
+.scroll-top:hover {
+background-color: #17232D;
+}
+
+/* --------------------------user profile------------------------------ */
+
+.section-profile .btn{
+    background-color: white;
+    color:#17232D;
+    font-size: 16px;
+}
+.section-profile .btn:hover{
+    background-color: #17232D;
+    
+}
+.section-profile .h4
+{
+   font-size: 28px;
+   color: #17232D;
+}
+
+.section-profile
+{
+    background-color: #6BCCBA;
+    color:white;
+}
+
+
+
+/* -----------------------------------------chat box--------------------------- */
+
+.section-chat{
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("../../static/images/banner_top.jpg") fixed no-repeat;
+
+}
+
+.section-chat  .chat-box{
+    border: 2px solid #6BCCBA;
+}
+#chat{
+    padding-left:0;
+    margin:0;
+    list-style-type:none;
+    overflow-y:scroll;
+    height:500px;
+    /* border-top:2px solid #fff; */
+    border-bottom:2px solid #6BCCBA;
+    width: 100%;
+
+}
+#chat li{
+    padding:10px 30px;
+}
+#chat h2{
+    display:inline-block;
+    font-size:15px;
+    font-weight:400;
+}
+
+#chat .chat-u-name{
+    margin-bottom:5px;
+}
+#chat .message{
+    padding:20px;
+    color:#fff;
+    line-height:25px;
+    max-width:90%;
+    display:inline-block;
+    text-align:left;
+    border-radius:5px;
+}
+#chat .me{
+    text-align:right;
+}
+#chat .you{
+    text-align:left;
+}
+#chat .you .message{
+    background-color:#17232D;
+}
+#chat .me .message{
+    background-color:#6BCCBA;
+}
+#chat .triangle{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+}
+#chat .you .triangle{
+        border-color: transparent transparent #17232D transparent;
+        margin-left:15px;
+}
+#chat .me .triangle{
+        border-color: transparent transparent #6BCCBA transparent;
+        margin-left:95%;
+}
+
+@media only screen and (max-width: 768px) {
+    #chat .me .triangle{
+        border-color: transparent transparent #6BCCBA transparent;
+        margin-left:90%;
+}
+  }
+
+.section-chat .send-message i{
+    width: 53px;
+    height: 50px;
+    background-color: #17232D;
+    color: #17232D;
+    border-radius: 30%;
+    padding: 8px;
+    margin-top: 10px;
+}
+.section-chat .send-message i:hover{
+    background-color: #6BCCBA;
+   color: #17232D;
+}

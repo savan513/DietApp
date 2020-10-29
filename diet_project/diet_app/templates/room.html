@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/chat.css'%}">
+    <style>
+        body{
+            background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)) ,url("{% static 'images/chatback.jpg' %}");
+             height: 100vh;
+    
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  
+}
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;color: #7ED956;">User : {{user}}</h2>
+    <div class="container">
+	<!--<div id="chat-log"></div><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send">
+-->
+        <div class="container content">
+        <div class="row center">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-header">Chat</div>
+                    <div class="card-body height3">
+                        <ul class="chat-list" id="chat-log">
+                          
+                        </ul>
+                    </div>
+                    <div class="row">
+                    <input type="text" class="form-control col-7" id="chat-message-input" style="margin-left: 20px;"><button class="btn btn-success" id="chat-message-submit" style="margin-left: 10px;">Send</button>
+                </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+    <script>
+        const roomName = {{room_name}}
+        const userName= {{user_name}}
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/diet_chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+
+            if(data.command=='new_message')
+            {
+                 var name=data.name
+                var msg=data.message
+                 var tags = document.createElement("li");
+                var imgtag=document.createElement('img');
+
+                var div1=document.createElement('div');
+                div1.className='chat-img';
+                var div2=document.createElement('div');
+                div2.className='chat-body';
+
+                var div3=document.createElement('div');
+                div3.className='chat-message';
+
+                var htag=document.createElement('h5');
+                htag.textContent=name;
+                var pTag=document.createElement('p');
+                pTag.textContent = msg;
+
+                div3.appendChild(htag);
+                div3.appendChild(pTag);
+
+                div2.appendChild(div3);
+                div1.appendChild(imgtag);
+
+
+            if(userName==name){
+                tags.className= 'out';
+                imgtag.src="https://bootdey.com/img/Content/avatar/avatar1.png";
+            }
+            else
+            {
+                 tags.className= 'in';
+                 {% load static %}
+                 imgtag.src="{% static 'inimage.png' %}";
+            }
+             tags.appendChild(div1);
+             tags.appendChild(div2);
+             var element = document.getElementById('chat-log');
+             element.appendChild(tags);
+            }
+            else
+            {
+                var element = document.getElementById('chat-log');
+                element.innerHTML = "";
+
+                var msgs=JSON.parse(data['messages'])
+
+                var count=Object.keys(msgs.messages).length;
+                console.log(msgs.messages[0]['name']);
+
+                for(var i=count-1;i >=0;i--)
+                {
+
+                var name1=msgs.messages[i]['name'];
+                var msg1=msgs.messages[i]['content'];
+                 var tags = document.createElement("li");
+                var imgtag=document.createElement('img');
+
+                var div1=document.createElement('div');
+                div1.className='chat-img';
+                var div2=document.createElement('div');
+                div2.className='chat-body';
+
+                var div3=document.createElement('div');
+                div3.className='chat-message';
+
+                var htag=document.createElement('h5');
+                htag.textContent=name1;
+                var pTag=document.createElement('p');
+                pTag.textContent = msg1;
+
+                div3.appendChild(htag);
+                div3.appendChild(pTag);
+
+                div2.appendChild(div3);
+                div1.appendChild(imgtag);
+
+
+            if(userName==name1){
+                tags.className= 'out';
+                imgtag.src="https://bootdey.com/img/Content/avatar/avatar1.png";
+            }
+            else
+            {
+                 tags.className= 'in';
+                 {% load static %}
+                 imgtag.src="{% static 'inimage.png' %}";
+            }
+             tags.appendChild(div1);
+             tags.appendChild(div2);
+
+             var element = document.getElementById('chat-log');
+             element.appendChild(tags);
+
+                }
+
+            }
+        };
+        chatSocket.onopen = function(e) {
+
+            chatSocket.send(JSON.stringify({
+
+              'command':'fetch_old',
+            }));
+
+        };
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'name':userName,
+                'command':'new_message',
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

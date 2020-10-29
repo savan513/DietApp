@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasta Diet</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+   
+       .carousel{
+             margin-top: 6%;
+        }
+
+
+        @media only screen and (max-width: 600px) {
+           .carousel
+            {
+                margin-top:15% !important;
+            }
+        }
+.section-plans{
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("static/images/plans-bg.jpg ") ;
+
+}
+body {
+           font-family: 'Acme', sans-serif;
+        }
+
+        
+        .scrolled_nav
+        {
+            background-color: #17232D;
+            color:#6BCCBA;
+            
+        }
+        .navTop
+        {
+            background-color: #17232D;
+            color:#6BCCBA;
+            
+        }
+        .nav-link,
+        .dropdown-item,
+        .navbar-brand {
+            color: #6BCCBA !important;
+
+        }
+
+        .header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('static/images/header.jpg');
+            height: 100vh;
+
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .nav-item {
+
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        .links:hover {
+
+            display: inline-block;
+            border-bottom: 2px solid blue;
+            padding-bottom: 2px;
+
+        }
+        @media only screen and (max-width: 760px) {
+            .navbar-nav
+            {
+                margin-top:20px;
+
+
+            }
+            .dropdown-menu
+            {
+                text-align:center;
+            }
+        }
+        .nav-link:hover , .navbar-brand:hover{
+            color: #6BCCBA;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+
+        }
+        .card{
+        transition: transform .2s;
+        }
+
+        .card:hover{
+           transform: scale(1.05)
+        }
+        .dropdown-menu
+        {
+            border:none;
+
+        }
+
+    </style>
+<body>
+
+
+    
+    <!-- --------------------scroll top-------------------------------- -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    
+    
+       <!--Navbar -->
+    <nav class="navbar navbar-expand-md  fixed-top bg-dark navbar-dark" style="background-color:#17232D !important;">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">
+      {% load static %}
+        <img src="{% static 'images/1.png'%}" alt="Logo" style="width:26%;">
+        </a>
+
+  <!-- Toggler/collapsibe Button -->
+                  
+                    <button class="navbar-toggler animate__animated animate__fadeInRight "  style="margin-left:auto;margin-right:25px;margin-top: -40px;" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <i class="fa fa-bars" style="color: #6BCCBA;font-size: 24px;" aria-hidden="true"></i>
+            </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto" style="margin-right:40px; color:#6BCCBA ; font-size: 18px;" >
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><span class="links">Home</span></a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#plans"><span class="links">Plans</span></a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#dietitian"><span class="links">Dietitian</span></a>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#blog"><span class="links">Blog</span></a>
+                    </li>
+        
+      {% if user.is_authenticated %}
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                        <span class="links"> {{user}}</span>
+                                    </a>
+                                    {% if user.is_customer %}
+                                    <div class="dropdown-menu" style="background-color:#17232D">
+                                        <a class="dropdown-item" href="/userdashboard" style="color:#6BCCBA">My Profile </a>
+                                        <a class="dropdown-item" href="/logout" style="color:#6BCCBA">Logout</a>
+
+                                    </div>
+                                    {% endif %}
+                                    {% if user.is_dietitian %}
+                                    <div class="dropdown-menu" style="background-color:#17232D">
+                                        <a class="dropdown-item" href="/dietitiandashboard" style="color:#6BCCBA">My Profile </a>
+                                        <a class="dropdown-item" href="/logout" style="color:#6BCCBA">Logout</a>
+
+                                    </div>
+                                    {% endif %}
+                                    {% if user.is_admin %}
+                                    <div class="dropdown-menu" style="background-color:#17232D">
+
+                                        <a class="dropdown-item" href="/logout" style="color:#6BCCBA">Logout</a>
+
+                                    </div>
+                                    {% endif %}
+                                 </li>
+                    {% else %}
+                     <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#LoginModal"><span class="links">SignIn</span></a>
+                    </li>
+                    {% endif %}
+                    
+    </ul>
+  </div>
+</nav>
+
+      
+    <!-- --------------------------section top banner------------------------- 
+    <section class="top-banner section section-top-banner pb-3">
+
+        <div class=" d-flex justify-content-center">
+            <div class="banner-content text-center">
+                <div class="display-3">"Sasta Diet"</div>
+                <div class="display-4">we are here for help you.</div>
+            </div>
+        </div>
+        <div id="particles-js"
+            style="background-color:transparent;height:100vh;position: absolute;top:0%; width: 100%;">
+            <canvas class="particles-js-canvas-el" width="1913" height="666"
+                style="width: 100%; height: 100%; "></canvas>
+
+        </div>
+    </section>
+-->
+ {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="display:none">
+        <strong id="g_msg">Message : {{message}} </strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+     <script>
+        swal(document.getElementById("g_msg").innerHTML);
+    </script>
+
+    {% endfor %}
+ <!-- ------------------------carousel------------------------ -->
+
+  <!--  <div class="section section-carousel">
+        <div class="container-fluid">
+            <div class="row">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for poster in posters %}
+                        {% if forloop.first %}
+                            <li data-target="#carouselExampleIndicators{{forloop.counter}}" data-slide-to="{{poster.id}}" class="active"></li>
+                        {% else %}
+                            <li data-target="#carouselExampleIndicators{{forloop.counter}}" data-slide-to="{{poster.id}}" class=""></li>
+                        {% endif %}
+
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for poster in posters%}
+                        {% if forloop.first%}
+                      <div class="carousel-item active">
+                          {% else %}
+                          <div class="carousel-item">
+                          {% endif %}
+                        <img class="d-block w-100 img-fluid" src="/media/{{poster.image}}" alt="First slide">
+                      </div>
+                        {% endfor %}
+
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators{{forloop.counter}}" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators{{forloop.counter}}" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+            </div>
+        </div>
+    </div>-->
+
+
+    <!----------------------carousel 1------------------------>
+
+     <div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+         {% for poster in posters%}
+                        {% if forloop.first%}
+                      <div class="carousel-item active">
+                          {% else %}
+                          <div class="carousel-item">
+                          {% endif %}
+            <img class="d-block" style="width: 100%;" src="/media/{{poster.image}}" alt="First slide">
+          </div>
+          {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls{{forloop.counter}}" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls{{forloop.counter}}" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    <!-- ------------------------------section how we work------------------------ -->
+    <section class="section section-how-we-work pb-3">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">How We Work</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+                    <div class="steps text-center card p-3">
+                        <div class="header"><span>1</span></div>
+                        <div class="body">Choose Your Plan.</div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+                    <div class="steps text-center card p-3">
+                        <div class="header"><span>2</span></div>
+                        <div class="body">Fill The Form.</div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+                    <div class="steps text-center card p-3">
+                        <div class="header"><span>3</span></div>
+                        <div class="body">Get Your Diet in 24 Hours.</div>
+                    </div>
+
+                </div>
+            </div>
+    </section>
+
+
+    <!-- ------------------------------Best Plans-------------------------- -->
+    <section class="section section-plans pb-3" id="plans">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">Our Plans</div>
+            </div>
+            <div class="row">
+                {% for p in plans %}
+                <div class="col-lg-3 col-md-6 col-sm-12 mt-3">
+                    {% if forloop.counter == 1%}
+                    <div class="card" data-aos="fade-up"  data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000" >
+                          <div class="card-header"> <p style="font-size: 18px;background-color: #6C9CD2;border-radius: 20px;"></p>{{p.title}}</div>
+                     {% elif forloop.counter == 2 %}
+                         <div class="card" data-aos="flip-right"  data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000" >
+                              <div class="card-header"> <p style="font-size: 18px;background-color: #6C9CD2;border-radius: 20px;"></p>{{p.title}}</div>
+                     {% elif forloop.counter == 3 %}
+                         <div class="card" data-aos="flip-left"  data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000" >
+                               <div class="card-header"> <p style="font-size: 18px;background-color: #6C9CD2;border-radius: 20px;">Recomdation</p>{{p.title}}</div>
+                     {% elif forloop.counter == 4 %}
+                         <div class="card" data-aos="fade-up"  data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000" >
+                               <div class="card-header"> <p style="font-size: 18px;background-color: #6C9CD2;border-radius: 20px;">Recomdation</p>{{p.title}}</div>
+
+                      {% else %}
+                             <div class="card" data-aos="fade-up"  data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000" >
+                     {%endif %}
+
+                        <div class="card-body">
+                            <ul>
+                                <li class="price">₹ {{p.price}} / month</li>
+
+                                {% for d in p.split_description %}
+                                <li>{{d}}</li>
+
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn getplan"  id="{{p.id}}">Get It Now</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+    </section>
+
+<!-- --------------------------------modal-------------------------------- -->
+<div class="modal fade" id="DivModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background-color: #6BCCBA">
+        <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Purchase Plan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form action="/saveandpay/" method="post" onsubmit="return checksubmit()">{% csrf_token %}
+      <div class="modal-body mx-3" style="height: 500px;overflow-y: scroll;">
+        <div class="md-form mb-5">
+          <i class="fa fa-user prefix grey-text"></i>
+          <input type="text" id="Form-uname" class="form-control validate" name="username" required>
+          <label data-error="wrong" data-success="right" for="Form-uname" >Your UserName</label>
+        </div>
+          <input type="hidden" id="plan_id" name="plan_id">
+        <div class="md-form mb-5">
+          <i class="fa fa-envelope prefix grey-text"></i>
+          <input type="email" id="Form-email" class="form-control validate" name="email" required>
+          <label data-error="wrong" data-success="right" for="Form-email">Your email</label>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="password" id="Form-pass" class="form-control validate" name="password" required>
+          <label data-error="wrong" data-success="right" for="Form-pass">Your password</label>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="password" id="Form-passc" class="form-control validate" required>
+          <label data-error="wrong" data-success="right" for="Form-passc">Confirm password</label>
+        </div>
+          
+          <div class="md-form mb-4">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="text" id="Form-refferal" class="form-control validate" name="referral" >
+          <label data-error="wrong" data-success="right" for="Form-refferal">Referral code (if you have)</label>
+        </div>
+<div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="tnc">
+    <label class="custom-control-label" for="tnc">Accept <a href="#">Term and Conditions.</a></label>
+</div>
+        <div class="mt-3 p-2">
+            <div class="h4 text-center">Plan Details</div>
+            <div class="h5">
+                   <p>Plan Name : <span id="plantitle"></span></p>
+                   <p>Plan Amount : <span id="planprice"></span></p>
+            </div>
+        </div>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn" type="submit" style="background-color: #6BCCBA;color:white;font-size:14px">Purchase Now</button>
+      </div>
+            </form>
+    </div>
+  </div>
+</div>
+<!-- Login Model -->
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background-color: #6BCCBA">
+        <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Login</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <form id="loginform" method="post" action="#">{% csrf_token %}
+      <div class="modal-body mx-3">
+          <div class="md-form mb-5" id="msg">
+
+          </div>
+        <div class="md-form mb-5">
+          <i class="fa fa-user prefix grey-text"></i>
+          <input type="text" id="login_uname" class="form-control validate" name="username" required>
+          <label data-error="wrong" data-success="right" for="login_uname" >Your UserName</label>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="password" id="login_pass" class="form-control validate" name="password" required>
+          <label data-error="wrong" data-success="right" for="login_pass">Your password</label>
+        </div>
+
+
+
+
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn" id="submit" type="button" style="background-color: #6BCCBA;color:white;font-size:14px">Make Login</button>
+
+      </div>
+             <div class="modal-footer d-flex justify-content-center">
+            <a id="" href="" data-toggle="modal" data-target="#forgetpass" style="color:#6BCCBA">Forget Password ?</a>
+             </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+   <div class="modal fade" id="forgetpass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background-color: #6BCCBA">
+        <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Forget Password</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <form id="forgetpassform"  action="#">
+      <div class="modal-body mx-3">
+          <div class="md-form mb-5" id="msg1">
+
+          </div>
+        <div class="md-form mb-5">
+          <i class="fa fa-user prefix grey-text"></i>
+          <input type="email" id="forgetpass_email" class="form-control validate" name="email" required>
+          <label data-error="wrong" data-success="right" for="login_uname" >Your Email</label>
+        </div>
+
+
+
+
+
+
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn" id="checkemail" type="button" style="background-color: #6BCCBA;color:white;font-size:14px">Check</button>
+
+      </div>
+
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- -------------------------------section blogs------------------------- -->
+    <section class="section section-blogs pb-3" id="blog">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">Latest blogs</div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="h4">Find out health tips and diating tips by our diatitions in our latest blog.</p>
+                    <a href="#"><button class="btn h5 btn-lg" style="font-weight:bold;">Go To Blogs</button></a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <svg xmlns="http://www.w3.org/2000/svg" style="margin-top: -10%;" viewBox="0 0 1440 320"><path fill="#6BCCBA" fill-opacity="1" d="M0,160L40,176C80,192,160,224,240,224C320,224,400,192,480,197.3C560,203,640,245,720,245.3C800,245,880,203,960,202.7C1040,203,1120,245,1200,250.7C1280,256,1360,224,1400,208L1440,192L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
+
+
+    <!-- -----------------------------------------Dietitian----------------------- -->
+    <section class="section section-dietitian pb-3" id="dietitian">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">Our Dietitians</div>
+            </div>
+            <div class="row">
+                <div class="container text-center my-3">
+                    <div class="row mx-auto my-auto">
+                        <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+                            <div class="carousel-inner w-100 pt-1 pb-1" role="listbox">
+                                {% for dietitian in dietitians %}
+                                {% if forloop.first %}
+                                <div class="carousel-item active">
+                                {% else %}
+                                    <div class="carousel-item ">
+                                 {% endif %}
+                                    <div class="col-md-4">
+                                        <div class="card text-center">
+                                            <div class="row">
+                                                <div class="col-12 mt-2">
+
+                                                    <img class="img-fluid rounded" src="/media/{{dietitian.image}}"
+                                                        style="width: 150px;height: 150px">
+                                                </div>
+                                                <div class="col-12 mt-3">
+                                                    <h3>{{ dietitian.firstname }} {{ dietitian.middlename }} {{ dietitian.lastname }} </h3>
+                                                </div>
+                                                <div class="col-12 p-4">
+                                                    <p>{{dietitian.qualification }}</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                            <a class="carousel-control-prev w-auto" href="#recipeCarousel" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon  border border-dark rounded-circle"
+                                    aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next w-auto" href="#recipeCarousel" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon  border border-dark rounded-circle"
+                                    aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+         <!-- --------------------------------------section feedback----------------------------- -->
+    <section class="section section-feedback pb-3">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">Customer Reviews</div>
+            </div>
+            {% for fd in feeds %}
+             {% if forloop.counter < 3 %}
+              <div class="row">
+               <div class="col-lg-3 col-md-3 col-sm-12 text-center ">
+                <img class="img-fluid rounded mt-2" src="/media/{{fd.image}}" style="height: 90px; width: 90px;">
+               </div>
+               <div class="col-lg-6 col-md-9 col-sm-12 text-lg-left text-md-left text-sm-center">
+                   <div class="h3 review-name" style="color: #6BCCBA;">{{fd.name}}</div>
+                   <div class="h6 review-date">{{fd.datetime}}</div>
+                   <div class="review-content">
+                       <p>{{fd.review}}</p>
+                   </div>
+               </div>
+            </div>               
+             {%  endif %}
+            {% endfor %}
+             <div class="row d-flex justify-content-center" >
+                <a href="#" style="z-index: 999" > <div class="h4 p-2" data-toggle="modal" data-target="#reviewmodal" style="background-color: #6BCCBA;color: white;">View More >></div> </a>
+             </div>
+
+        </div>
+         <div id="particles-js"
+            style="background-color:transparent;height:100%;position: absolute;top:0%; width: 100%;z-index: 2">
+            <canvas class="particles-js-canvas-el" width="1913" height="666"
+                style="width: 100%; height: 100%; "></canvas>
+
+        </div>
+
+    </section>
+
+        
+         <!-- --------------------------------modal reviews-------------------------------- -->
+    <div class="modal fade" id="reviewmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" style="z-index:999999">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center" style="background-color: #6BCCBA">
+                    <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">
+                        Customer Reviews</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3" style="height: 500px;overflow-y: scroll;">
+                    {% for fd in feeds %}
+                    <div class="row" >
+                        <div class="col-lg-3 col-md-3 col-sm-12 text-center">
+                            <img class="img-fluid rounded mt-2" src="/media/{{fd.image}}"
+                                style="height: 90px; width: 90px;">
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-12 text-lg-left text-md-left text-sm-center">
+                            <div class="h3 review-name" style="color: #6BCCBA;">{{fd.name}}</div>
+                            <div class="h6 review-date">{{fd.datetime}}</div>
+                            <div class="review-content">
+                                <p>{{fd.review}}</p>
+                            </div>
+                        </div>
+                    </div>
+                   {% endfor %}
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn" style="background-color: #6BCCBA;color:white;font-size:14px" type="button" class="close" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- -----------------------------------------Socila Media----------------------- -->
+    <section class="section section-social pb-3">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">Get Connected</div>
+            </div>
+            <div class="row">
+                <div class="content">
+                    <!-- card -->
+                    <div class="card" data-aos="zoom-out-up" data-aos-easing="linear"
+     data-aos-duration="1000">
+                        <div class="icon"><i class="fa fa-whatsapp  fa-3x"></i></div>
+                        <p class="title">whatsapp</p>
+                        <p class="text">Click to get connect us with whatsapp</p>
+                    </div>
+                    <!-- end card -->
+                    <!-- card -->
+                    <div class="card" data-aos="zoom-in" data-aos-easing="linear"
+     data-aos-duration="1000">
+                        <div class="icon"><i class="fa fa-instagram fa-3x"></i></div>
+                        <p class="title">instagram</p>
+                        <p class="text">Click to get connect us with instagram</p>
+                    </div>
+                    <!-- end card -->
+                    <!-- card -->
+                    <div class="card" data-aos="zoom-out-up" data-aos-easing="linear"
+     data-aos-duration="1000">
+                        <div class="icon"><i class="fa fa-envelope fa-3x"></i></div>
+                        <p class="title">email</p>
+                        <p class="text">Click to get connect us with email</p>
+                    </div>
+                    <!-- end card -->
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ---------------------------footer-------------------------------- -->
+    <section class="section section-footer p-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-about text-center">
+                       
+                        <div class="h2 mb-2 mt-3">ABOUT SASTA DIET</div>
+                        <div class="footer-logo my-4">
+                            <img src="{% static 'images/4.png'%}" class="img-fluid rounded" alt="sasta diet" style="width:150px;height:100px">
+
+                        </div>
+                        <div class="">
+                            We are the best and affordable diet provider with full family support and Personalize experience provider in India.
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-mid text-center">
+                        <div class="h2 mb-2 mt-3">Important Links</div>
+                        <ul class="mt-4">
+                            <a href="#plans" style="color:#6BCCBA" ><li>plans</li></a>
+                            <a href="#blog" style="color:#6BCCBA"><li>Blogs</li></a>
+                            <a href="#diatitian" style="color:#6BCCBA"><li>Our Dietitians</li></a>
+                        </ul>
+                        <div class="d-flex justify-content-around mt-4">
+                            <i class="fa fa-whatsapp  fa-2x"></i>
+                            <i class="fa fa-instagram fa-2x"></i>
+                            <i class="fa fa-envelope fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="footer-contact text-center ">
+                        <div class="h2 mb-2 text-center mt-3">Contact Us</div>
+                        <form class="mt-4 mx-md-5" action="/contactus/" method="post">{% csrf_token %}
+
+                            <div class="row">
+                              <div class="col-md-6 mb-4">
+                  
+                                <!-- Name -->
+                                <input type="text" id="Cname" name="name" class="form-control" placeholder="Name" required>
+                  
+                              </div>
+                              <div class="col-md-6 mb-4">
+                  
+                                <!-- Email -->
+                                <input type="email" id="Cemail" class="form-control"  name="email" placeholder="Email" required>
+                  
+                              </div>
+                            </div>
+                  
+                            <div class="row">
+                              <div class="col-md-12 mb-4">
+                  
+                                <!-- Subject -->
+                                <input type="text" id="Csubject" class="form-control" name="subject" placeholder="Subject" required>
+                  
+                              </div>
+                            </div>
+                  
+                            <div class="row">
+                              <div class="col-md-12">
+                  
+                                <div class="form-group mb-4">
+                                  <textarea class="form-control rounded" id="Cmessage" rows="3" name="message" placeholder="How can we help?" required></textarea>
+                                </div>
+                  
+                                <div class="text-center">
+                                  <button type="submit" class="btn">Submit</button>
+                                </div>
+                  
+                              </div>
+                            </div>
+                  
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- ------------------particals js--------------- -->
+    <script src="{% static 'js/particals.min.js'%}"></script>
+
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+              <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{% static 'js/validation.js'%}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+    $(document).ready(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/deletcinactive/',
+
+
+        })
+        .done(function(data) {
+            data=JSON.parse(data)
+
+        });
+
+    });
+    $('#submit').click(function(event) {
+
+    var formData = {
+        'username': $('input[id=login_uname]').val(),
+        'password': $('input[id=login_pass]').val(),
+
+        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+    };
+    $.ajax({
+            type: 'POST',
+            url: '/login/',
+            data: formData,
+            encode: true
+        })
+        .done(function(data) {
+          
+          data=JSON.parse(data);
+           if(data['msg'] == "success")
+           {
+                location.reload();
+               
+           }
+           if(data['msg'] == "fillform")
+                {
+                    
+                    window.location.href = data.redirect;
+                }
+            else
+            {
+               
+                $("#msg").html(data['msg']);
+            }
+        });
+        
+
+});
+   
+    $(".getplan").click(function(){
+
+            var pid= this.id;
+
+            $.ajax('getplan/', {
+
+                type: 'GET',  // http method
+                data: { id:pid  },  // data to submit
+
+                success: function (msg) {
+                    msg=JSON.parse(msg);
+                    $("#plantitle").html(msg['plan_title']);
+                    $("#planprice").html(msg['plan_price']);
+                    $("#plan_id").val(msg['plan_id']);
+                    $('#DivModal').modal('show');
+                },
+                error: function (msg) {
+<!--                    $('#DivModal').modal('hide');-->
+                    swal('Something Went Wrong');
+                }
+            });
+        });
+
+         $("#checkemail").click(function(){
+            var email= $("#forgetpass_email").val();
+
+            $.ajax('/forgetpassword/', {
+
+                type: 'GET',  // http method
+                data: { email:email  },  // data to submit
+
+                success: function (msg) {
+                    msg=JSON.parse(msg);
+                    $("#msg1").html(msg['message']);
+                },
+                error: function (msg) {
+<!--                    $('#DivModal').modal('hide');-->
+                    swal('Something Went Wrong');
+                }
+            });
+        });
+
+    $("#Form-refferal").blur(function(){
+        if ($(this).val().length > 0)
+            {
+                code= $(this).val();
+                  $.ajax('/checkrefferalcode/', {
+
+                type: 'GET',  // http method
+                data: { code:code  },  // data to submit
+
+                success: function (msg) {
+                    msg=JSON.parse(msg);
+                    if(msg['check'] == 'fail')
+                        {
+                            swal("Wrong Referral Code")
+                        }
+                },
+                error: function (msg) {
+<!--                    $('#DivModal').modal('hide');-->
+
+                }
+            });
+            }
+    });
+            
+    </script>
+   <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/5f7474eaf0e7167d001501c5/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+
+</html>

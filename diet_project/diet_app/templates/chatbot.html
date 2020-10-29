@@ -1,0 +1,344 @@
+{% extends 'basic.html' %}
+
+{% block title %} Chat Room {% endblock %}
+{% block ecss %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/chatbot.css">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+<style>
+     .section-profile{
+            margin-top: 5.7%;
+        }
+         @media only screen and (max-width: 600px) {
+           .section-profile
+            {
+                margin-top:14% !important;
+            }
+        }
+</style>
+{% endblock %}
+{% block body %}
+
+    <!-- --------------------scroll top-------------------------------- -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+
+    <section class="section section-profile p-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="h4 mt-3">Welcome, {{user.username}}</div>
+                </div>
+                <div class="col-6 text-right">
+                    {% if user.dietitian %}
+                    <div class="btn"><a href="/end_chat/{{room_id}}" id="end_chat " style="color:#6BCCBA">End Chat</a></div>
+                    {% endif %}
+                     {% if user.userdata %}
+                    <div class="btn" style="display:none" id="leave_chat"><a href="/userdashboard" id=" " style="color:#6BCCBA;">Leave Chat</a></div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-chat p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        {% if user.dietitian %}
+                        <div class="card-header">Chat With - {{room_member.username.firstname}}</div>
+                        {% endif %}
+
+                        {% if user.userdata %}
+                        <div class="card-header">Chat With - {{room_member.added_by}}</div>
+                        {% endif %}
+
+                        <div class="card-body text-center ">
+                            <div class="container chat-box">
+                                <div class="row chat_cont">
+                                    <ul id="chat" class="chat_ul">
+                                       
+                                        
+                                    </ul>
+                                </div>
+                                <div class="row send-message">
+
+                                    <div class="col-10 p-3">
+                                            <textarea class="form-control" rows="1" id="msg" placeholder="type message"></textarea>
+                                    </div>
+
+                                    <div class="col-2 text-left">
+                                        <i id="send" class="fa fa-send fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block escript%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+
+        const roomName = {{room_id}}
+        userName={{ userName }}
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/diet_chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+               var li_length;
+              var data = JSON.parse(e.data);
+            if(data['code'] =='new_message')
+            {
+                var message = data['message'];
+                var uname = data['name']
+                if(uname == userName)
+                {
+                var message1 = document.createElement("div");
+                message1.className="message"
+                message1.innerHTML=message
+                var triangle = document.createElement("div");
+                triangle.className="triangle"
+                var  name=  document.createElement("h2");
+                name.innerHTML=uname
+                var chat_u_name = document.createElement("div");
+                chat_u_name.className="chat-u-name"
+                chat_u_name.appendChild(name);
+
+                 var chat = document.createElement("li");
+                chat.className="me";
+                chat.appendChild(chat_u_name);
+                chat.appendChild(triangle);
+                chat.appendChild(message1);
+
+                chat_block=document.getElementById("chat")
+                chat_block.appendChild(chat);
+
+                }
+                else{
+                      var message1 = document.createElement("div");
+                message1.className="message"
+                message1.innerHTML=message
+                var triangle = document.createElement("div");
+                triangle.className="triangle"
+                var  name=  document.createElement("h2");
+                name.innerHTML=uname
+                var chat_u_name = document.createElement("div");
+                chat_u_name.className="chat-u-name"
+                chat_u_name.appendChild(name);
+
+                 var chat = document.createElement("li");
+                chat.className="you";
+                chat.appendChild(chat_u_name);
+                chat.appendChild(triangle);
+                chat.appendChild(message1);
+
+                chat_block=document.getElementById("chat")
+                chat_block.appendChild(chat);
+
+                }
+
+                  $(".chat_ul").animate({
+
+                    scrollTop:$(".chat_ul")[0].scrollHeight
+                },"2000");
+
+            }
+            else if(data['code'] =='fetch_old' && data['s_name'] == userName)
+                {
+                       var element = document.getElementById('chat');
+
+                    element.innerHTML = "";
+
+                    var msgs=JSON.parse(data['message'])
+
+                    var count=Object.keys(msgs.messages).length;
+
+
+                    for(var i=0;i < count;i++)
+                    {
+                         var name1=msgs.messages[i]['name'];
+                        var msg1=msgs.messages[i]['content'];
+                        if(name1 == userName)
+                            {
+                                 var message1 = document.createElement("div");
+                        message1.className="message"
+                        message1.innerHTML=msg1
+                        var triangle = document.createElement("div");
+                        triangle.className="triangle"
+                        var  name=  document.createElement("h2");
+                        name.innerHTML=name1
+                        var chat_u_name = document.createElement("div");
+                        chat_u_name.className="chat-u-name"
+                        chat_u_name.appendChild(name);
+
+                         var chat = document.createElement("li");
+                        chat.className="me";
+                        chat.appendChild(chat_u_name);
+                        chat.appendChild(triangle);
+                        chat.appendChild(message1);
+
+                        chat_block=document.getElementById("chat")
+                        chat_block.appendChild(chat);
+
+                            }
+                        else
+                            {
+                                  var message1 = document.createElement("div");
+                        message1.className="message"
+                        message1.innerHTML=msg1
+                        var triangle = document.createElement("div");
+                        triangle.className="triangle"
+                        var  name=  document.createElement("h2");
+                        name.innerHTML=name1
+                        var chat_u_name = document.createElement("div");
+                        chat_u_name.className="chat-u-name"
+                        chat_u_name.appendChild(name);
+
+                         var chat = document.createElement("li");
+                        chat.className="you";
+                        chat.appendChild(chat_u_name);
+                        chat.appendChild(triangle);
+                        chat.appendChild(message1);
+
+                        chat_block=document.getElementById("chat")
+
+                        chat_block.appendChild(chat);
+
+
+                            }
+
+                    }
+                     $(".chat_ul").animate({
+
+                    scrollTop:$(".chat_ul")[0].scrollHeight
+                },"slow")
+
+                }
+
+        };
+
+        $(window).on('load', function(){
+
+        });
+        chatSocket.onopen = function(e) {
+             chatSocket.send(JSON.stringify({
+
+                'name': userName,
+                'room': roomName,
+                'code': 'fetch_old'
+            }));
+
+        };
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#msg').focus();
+        document.querySelector('#msg').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#send').click();
+            }
+        };
+
+        document.querySelector('#send').onclick = function(e) {
+            const messageInputDom = document.querySelector('#msg');
+            const message = messageInputDom.value;
+
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'name': userName,
+                'room': roomName,
+                'code': 'new_message'
+            }));
+            messageInputDom.value = '';
+
+        };
+       {% if user.userdata %}
+             var inter = setInterval(function(){
+
+                $.ajax('/checkmeetingstatus/', {
+
+                type: 'GET',  // http method
+                data: { id:{{room_id}}  },  // data to submit
+
+                success: function (msg) {
+                    msg=JSON.parse(msg);
+                    if(msg['msg'] == 'success')
+                    {
+
+                        if(msg['status'] == '4' )
+                        {
+                            swal("Your Meeting is successfully completed and Chat Room is Closed");
+                            $("#msg").prop('disabled', true);
+
+                            clearInterval(inter);
+                            $("#leave_chat").css('display','block');
+                        }
+                    }
+                },
+                error: function (msg) {
+
+                    alert('Something Went Wrong');
+                }
+            });
+
+             }, 5000);
+       {% endif %}
+
+
+             $(window).bind("beforeunload",function(event) {
+    return "Please Make Room Closed By Clicking on End Chat Button if you are Leaving Tab";
+});
+
+
+    </script>
+    <!-- jQuery library -->
+
+
+<script>
+
+
+</script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- ------------------particals js--------------- -->
+    <script src="static/js/particals.min.js"></script>
+
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"
+        integrity="sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg=="
+        crossorigin="anonymous"></script>
+
+    <script src="/static/js/chatbot.js"></script>
+
+{% endblock %}

@@ -1,0 +1,490 @@
+
+
+*{
+    padding: 0px;
+    margin: 0px;
+}
+::selection{
+    background-color: #6BCCBA;
+    color: #fff;
+}
+::-webkit-scrollbar-track
+{
+	border: 2px solid white;
+	/* // border color does not support transparent on scrollbar
+	// border-color: transparent; */
+	background-color: #17232D;
+}
+
+::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #17232D;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #6BCCBA;
+	border-radius: 20px;
+}
+
+.section .section-heading{
+    font-size:48px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-transform: uppercase;
+    position: relative;
+    text-align: center;
+    font-family: 'Sniglet', cursive !important;
+}
+
+.section .section-heading:after,
+.section .section-heading:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+}
+.section .section-heading:after {
+    height: 2px;
+    background-color: rgba(252, 92, 15, 0.46);
+    left: 25%;
+    right: 25%;
+}
+
+.section .section-heading:before {
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    background-color: #fc5c0f;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: -6px;
+    z-index: 9;
+    border-radius: 50%;
+}
+.card{
+    height: 100%;
+}
+.card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* --------------------------scroll top-------------------------  */
+.scroll-top{
+    bottom: 22px;
+    cursor: pointer;
+    height: 50px;
+    position: fixed;
+    right: 90px;
+    text-align: center;
+    width: 50px;
+    z-index: 9999;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 30%;
+    background-color: #6BCCBA;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5)
+}
+
+.scroll-top i {
+    line-height: 50px;
+    color: #fff;
+    font-size: 25px;
+}
+
+.scroll-top.not-visible {
+bottom: -50px;
+visibility: hidden;
+opacity: 0;
+}
+
+.scroll-top:hover {
+background-color: #17232D;
+}
+
+/* --------------------------section top banner-------------------------  */
+
+
+.top-banner .banner-content{
+   
+    position: absolute;
+    top: 45%;
+    font: 400 100px/1.3 'Oleo Script', Helvetica, sans-serif;
+    color: white;
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+    animation-name: example;
+    animation-duration: 4s;
+    animation-iteration-count: infinite; 
+}
+
+@keyframes example {
+    0%   {color:white; }
+    50%  {color:#6BCCBA; }
+    100% {color:white;} 
+  }
+
+
+/* --------------------------section carousel-------------------------  */
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-duration: 2s;
+    transition-property: opacity;
+   }
+
+   .carousel-fade  .carousel-item.active,
+   .carousel-fade  .carousel-item-next.carousel-item-left,
+   .carousel-fade  .carousel-item-prev.carousel-item-right {
+     opacity: 1;
+   }
+
+   .carousel-fade .active.carousel-item-left,
+   .carousel-fade  .active.carousel-item-right {
+    opacity: 0;
+   }
+
+   .carousel-fade  .carousel-item-next,
+   .carousel-fade .carousel-item-prev,
+   .carousel-fade .carousel-item.active,
+   .carousel-fade .active.carousel-item-left,
+   .carousel-fade  .active.carousel-item-prev {
+    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+   }
+ .carousel-control-prev-icon, .carousel-control-next-icon{
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 50% !important;
+    background-color: #6BCCBA  !important;
+
+}
+ .carousel-control-prev-icon:hover, .carousel-control-next-icon:hover{
+    background-color: #17232D  !important;
+}
+
+/* --------------------------section how we work-------------------------  */
+.section-how-we-work .steps .header{
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    margin: auto;
+    background-color: #17232D;
+    transition: all 0.8s ease;
+    border-radius: 50%;
+    font-size: 30px;
+    color: #fff;
+}
+
+.section-how-we-work .steps{
+    background-color:#6BCCBA;
+    transition: all 0.8s ease;
+
+}
+.section-how-we-work .steps .body{
+    font-size: 22px;
+
+}
+.section-how-we-work .card{
+    border: 4px solid #6BCCBA;
+    border-radius: 40px;
+
+}
+.section-how-we-work .steps:hover {
+    background-color: #17232D;
+    color:white;
+}
+.section-how-we-work .steps:hover .header {
+    background-color: #6BCCBA;
+    color: white;
+}
+/* --------------------------Best plans-------------------------  */
+.section-plans .card .card-header,.section-plans .card .card-footer{
+    text-align: center;
+    color: white;
+    background-color: #17232D;
+    font-size: 22px;
+    text-transform: uppercase;
+}
+.section-plans .btn{
+    background-color: #6BCCBA;
+    color: #17232D;
+    font-weight: bold
+}
+.section-plans .price{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.section-plans .card .card-header{
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+}
+
+.section-plans .section-heading{
+    color:white;
+}
+.section-plans ul{
+    list-style-type: none;
+}
+.section-plans li{
+border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-align: center;
+}
+.section-plans li:hover{
+    border-bottom: 2px solid #6BCCBA;
+    border-left: 2px solid #6BCCBA;
+    border-right: 2px solid #6BCCBA;;
+     font-weight: bold;
+    }
+
+.section-plans .card:hover .card-header,.section-plans .card:hover .card-footer{
+    background-color: #6BCCBA;
+    color: #17232D;
+    font-weight: bold;
+}
+.section-plans .card:hover .btn{
+    background-color: #17232D;
+    color: #fff;
+}
+
+/* --------------------------our blogs-------------------------  */
+.section-blogs{
+  background-color: #6BCCBA;
+  color: white;
+}
+.section-blogs .btn{
+    background-color: white;
+    color:#6BCCBA;
+}
+.section-blogs .btn:hover{
+    background-color: #17232D;
+    color:white;
+}
+/* -----------------------------dietitian------------------------------- */
+
+@media (max-width: 768px) {
+    .carousel-inner .carousel-item>div {
+        display: none;
+    }
+
+    .carousel-inner .carousel-item>div:first-child {
+        display: block;
+    }
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+    display: flex;
+}
+
+/* display 3 */
+@media (min-width: 768px) {
+
+    .carousel-inner .carousel-item-right.active,
+    .carousel-inner .carousel-item-next {
+        transform: translateX(33.333%);
+    }
+
+    .carousel-inner .carousel-item-left.active,
+    .carousel-inner .carousel-item-prev {
+        transform: translateX(-33.333%);
+    }
+}
+
+.carousel-inner .carousel-item-right,
+.carousel-inner .carousel-item-left {
+    transform: translateX(0);
+}
+
+.section-dietitian .carousel-control-prev-icon,
+.section-dietitian .carousel-control-next-icon{
+    width: 50px !important;
+    height: 50px !important;
+    background-color: #6BCCBA;
+}
+/*.section-dietitian .carousel-control-next-icon{
+   margin-right: -50px;
+}
+.section-dietitian .carousel-control-prev-icon{
+    margin-left: -50px;
+}*/
+.section-dietitian .carousel-control-prev-icon:hover,
+.section-dietitian .carousel-control-next-icon:hover{
+    width: 50px !important;
+    height: 50px !important;
+    background-color: #17232D;
+}
+
+/* -----------------------------section feedback------------------------------- */
+ .section-feedback{
+    background-color: #e6e6e6;
+    position:relative
+}
+
+/* -----------------------------Social media------------------------------- */
+.content {
+    max-width: 1024px;
+    width: 100%;
+    padding: 0 4%;
+    padding-top: 0px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+ 
+ @media screen and (max-width: 767px) {
+    .content {
+       padding-top: 10px;
+       flex-direction: column;
+    }
+ }
+ 
+ .section-social .card {
+    width: 100%;
+    max-width: 300px;
+    min-width: 200px;
+    height: 250px;
+    background-color: #6BCCBA;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+    border: 2px solid #6BCCBA;
+    font-size: 16px;   
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.3s ease;
+ }
+ 
+ .section-social .icon {
+    margin: 0 auto;
+    width: 100%;
+    height: 80px;
+    max-width:80px;
+    background: linear-gradient(90deg, #657480 0%, #000000 40%, rgba(0, 0, 0, 0.28) 60%);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  /*  transition: all 0.8s ease;*/
+    background-position: 0px;
+    background-size: 200px;
+ }
+ 
+ .section-social .card:hover{
+    background: #17232D
+
+ }
+ 
+ .section-social .card .title {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    margin-top: 30px;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+ }
+ 
+ .section-social .card .text {
+    width: 80%;
+    margin: 0 auto;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+    font-weight: 200;
+    letter-spacing: 2px;
+    opacity: 0;
+    max-height:0;
+    transition: all 0.3s ease;
+ }
+ 
+ .section-social .card:hover {
+    height: 270px;
+ }
+ 
+ .section-social .card:hover .info {
+    height: 90%;
+ }
+ 
+ .section-social .card:hover .text {
+    transition: all 0.3s ease;
+    opacity: 1;
+    max-height:40px;
+ }
+ 
+ .section-social .card:hover .icon {
+    background-position: -120px;
+   /* transition: all 0.3s ease;*/
+ }
+ 
+ .section-social .card:hover .icon i {
+    background: #fff;
+    color:#fff;
+    -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+    opacity: 1;
+ transition: all 0.3s ease;
+ }
+
+/* ---------------------footer----------------------- */
+ .section-footer{
+     background-color: #17232D;
+ }
+ .section-footer  {
+       color: white;
+}
+.section-footer .h2{
+    color: #6BCCBA;
+    text-transform: uppercase;
+}
+.section-footer ul{
+    list-style-type: none;
+}
+.section-footer li{
+border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-align: center;
+}
+
+.section-footer li:hover{
+    border: 2px solid #6BCCBA;
+   
+     font-weight: bold;
+    }
+    .section-footer .btn{
+        background-color: white;
+        color:#17232D;
+        font-size: 14px;
+    }
+    .section-footer .btn:hover{
+        background-color: #6BCCBA;
+        color:white;
+    }
+    .section-footer .footer-mid i{
+        color: #6BCCBA;
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 8px;
+    }
+    .section-footer .footer-mid i:hover{
+        color: #17232D;
+        background-color: #6BCCBA;
+        
+    }

@@ -1,0 +1,1031 @@
+    {% extends 'basic.html' %}
+
+
+    {% block title %}{{user.userdata.firstname}} | Sasta Diet{% endblock %}
+    {% block ecss %}
+    <style>
+        [type=radio][id=radiochat] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+        [type=radio][id=radiocall] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio][id=radiochat] + #chatfa {
+  cursor: pointer;
+}
+
+[type=radio][id=radiocall] + #callfa {
+  cursor: pointer;
+}
+
+[type=radio][id=radiochat]:checked + #chatfa {
+  color:black;
+}
+
+[type=radio][id=radiocall]:checked + #callfa {
+  color:black;;
+}
+        .section-profile{
+            margin-top: 6%;
+        }
+         @media only screen and (max-width: 600px) {
+           .section-profile
+            {
+                margin-top:14% !important;
+            }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/userdashboard.css">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% endblock %}
+    {% block body %}
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="display:none">
+        <strong id="g_msg">Message : {{message}} </strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+     <script>
+        swal(document.getElementById("g_msg").innerHTML);
+    </script>
+
+    {% endfor %}
+    {% if report_message %}
+    <div id="report_message" title="Weekly Report Message">
+        <p id="r_msg" style="display:none;">{{report_message}}</p>
+        <p id="achive" style="display:none">{{achive}}</p>
+        <script>
+            var msg = document.getElementById("r_msg").innerHTML;
+            if (document.getElementById("achive").innerHTML  == 'success'){
+            swal("Good Job",msg,document.getElementById("achive").innerHTML );
+            }
+            else{
+            swal("Ohh no",msg,document.getElementById("achive").innerHTML );
+            }
+      </script>
+    </div>
+{% endif %}
+
+
+    <!-- --------------------scroll top-------------------------------- -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+
+    <section class="section section-profile p-2" >
+           <div class="container">
+               <div class="row">
+                   <div class="col-6">
+                       <div class="h4 mt-3">Welcome, {{user.username}}</div>
+
+                   </div>
+                   <div class="col-6 text-right">
+                       {% if is_room %}
+                        <a href="/ws/join_room/{{conf_met.room_id}}"><div class="btn" >Join Room</div></a>
+                       {% endif %}
+
+
+                       {% if not user.userdata.is_expired %}
+                       <div class="btn" data-toggle="collapse" data-target="#detail">My profile</div>
+                       {% endif %}
+                   </div>
+               </div>
+
+
+
+           </div>
+    </section>
+
+       <!-- <section class="section section-referral  p-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                 <div class="h5">Refer your friend and get points for discount on next purchase.</div>
+                 <div class="h6">Your referral code : <span> Referral Code : <input type="text" disabled id="ref_code" style="color: #6BCCBA;width:12%;padding:5px;background-color:#17232D;border:none" value="{{user.userdata.referral_code}}" />  </span><abbr title="Click to Copy!"><i class="fa fa-clipboard" id="clipboard" style="color: #6BCCBA;margin-right:10px;" aria-hidden="true"></i> </abbr></div>
+                </div>
+                <div class="col-4 text-center">
+                   <div class="h4">Your referral points</div>
+                   <div class="h5"><span>{{user.userdata.points}}</span> Points.</div>
+                </div>
+            </div>
+        </div>
+ </section>-->
+
+    {% if user.userdata.is_expired %}
+        <div class="container">
+               <div class="row">
+                   <div class="col-3">
+                       <div class="h4 mt-3" style="color:red">Your Plan is Expired</div>
+                   </div>
+                   <div class="col-3 text-right">
+
+
+
+
+                       <div class="btn" id='updateplan'>Update Plan</div>
+
+                   </div>
+               </div>
+           </div>
+       <!-- ------------------------------Best Plans-------------------------- -->
+    <section class="section section-plans pb-3" id="plans" style="display: none">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading" style="color:black">Our Plans</div>
+            </div>
+            <div class="row">
+                {% for p in plans %}
+                <div class="col-lg-3 col-md-6 col-sm-12 mt-3">
+                    <div class="card">
+                        <div class="card-header">{{p.title}}</div>
+                        <div class="card-body">
+                            <ul>
+                                <li class="price">₹ {{p.price}} / month</li>
+
+                                {% for d in p.split_description %}
+                                <li>{{d}}</li>
+
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn getplan"  id="{{p.id}}">Get It Now</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+    </section>
+        <div class="modal fade" id="DivModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background-color: #6BCCBA">
+        <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Purchase Plan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form action="/updatewholeplan/" method="post" onsubmit="return checksubmit()">{% csrf_token %}
+      <div class="modal-body mx-3">
+       
+          <input type="hidden" id="plan_id" name="plan_id">
+       
+
+        <div class="">
+            <div class="h4 text-center">Plan Details</div>
+            <div class="h5">
+                   <p>Plan Name : <span id="plantitle"></span></p>
+                   <p>Original Amount : <span id="planprice"></span></p>
+                   <p>Ponits : <span id="points">{{user.userdata.points}}</span></p>
+                   <p>Amount to Pay : <span id="amounttopay"></span></p>
+            </div>
+        </div>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn" type="submit" style="background-color: #6BCCBA;color:white;font-size:14px">Purchase Now</button>
+      </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+    {% endif %}
+    
+
+    {% if not user.userdata.is_expired %}
+    <div id="detail" class="collapse">
+        <section class="section section-user-detail pb-3">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="section-heading">your details</div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            You can view or edit your detail.
+                        </div>
+                        <div class="card-body">
+                            <form action="/updatedata/" method="post">{% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="fname">First Name</label>
+                                            <input type="text" class="form-control" id="fname" value="{{user.userdata.firstname }}" name="fname" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="mname">Middle Name</label>
+                                            <input type="text" class="form-control" id="mname" value="{{user.userdata.middlename }}" name="mname"  required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="lname">Last Name</label>
+                                            <input type="text" class="form-control" id="lname" value="{{user.userdata.lastname }}" name="lname"  required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="Form-name">User name</label>
+                                            <input type="text" class="form-control" id="Form-name" value="{{user.username }}" name="uname"  required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="Form-email">Email id</label>
+                                            <input type="email" class="form-control" id="Form-email" value="{{user.email }}" name="email"  required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="age">Age</label>
+                                            <input type="number" class="form-control" id="age" value="{{user.userdata.age}}"  name="age" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="gender">Gender</label>
+                                            <div class="mt-1">
+                                                {% if user.userdata.gender == "Male" or user.userdata.gender == "male"%}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="male" name="radiogender" id="radiomale" required checked>Male
+                                                </label>
+                                            </div>
+                                            {% else %}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="male" name="radiogender" id="radiomale" required>Male
+                                                </label>
+                                            </div>
+                                            {% endif %}
+                                            {% if user.userdata.gender == "Female" or user.userdata.gender == "female"%}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="female" name="radiogender" id="radiofemale" checked>Female
+                                                </label>
+                                            </div>
+                                            {% else %}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="female" name="radiogender" id="radiofemale">Female
+                                                </label>
+                                            </div>
+                                            {% endif %}
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="mono">Mobile number</label>
+                                            <input type="number" class="form-control" id="mono" value="{{user.userdata.mobile_no }}" name="mobile_no"  required>
+                                        </div>
+                                    </div>
+                                   <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="address">City</label>
+                                        <input class="form-control" id="address" name="address" required value="{{user.userdata.city}}">
+                                    </div>
+                                </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="height">Height (in feet)</label>
+                                            <input type="number" step="0.01" class="form-control" id="height" name="height"  value="{{user.userdata.height }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="weight">weight (in kg)</label>
+                                            <input type="number" step="0.01"  class="form-control" id="weight" name="weight"  value="{{user.userdata.weight }}" required>
+                                        </div>
+                                    </div>
+
+                                   
+
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn ">
+                                        <h5 style="margin:auto">Submit</h5>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </div>
+
+
+         <section class="section section-plan-detail  p-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                         <div class="card card-plan">
+                             <div class="card-header">My Plan</div>
+                             <div class="card-body">
+                                <ul>
+                                    <li>Name : {{user.userdata.plan.title}}</li>
+                                    <li>Price : ₹ {{user.userdata.plan.price}} / month</li>
+                                    <li>Join Date : {{user.userdata.created_at}}</li>
+                                    <li>Expiry Date : {{user.userdata.plan_end_date}}</li>
+
+                                </ul>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                        <div class="card card-dietitian">
+                            <div class="card-header">My Dietition</div>
+                            <div class="card-body text-center">
+                                <div class="row row d-flex justify-content-center">
+                                    {% if user.userdata.dietitian %}
+                                    <div class="col-12 mt-2">
+                                        <img class="img-fluid rounded" src="/media/{{user.userdata.dietitian.image}}"
+                                            style= "width:150 height:150" data-tilt  data-tilt-scale="1.3">
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+
+                                        <h3>{{user.userdata.dietitian.firstname}} {{user.userdata.dietitian.lastname}}</h3>
+                                    </div>
+                                    <div class="col-12 p-4">
+                                        <p>{{user.userdata.dietitian.qualification}}</p>
+
+                                    </div>
+                                    {% else %}
+                                         <h3 style="text-align:center">Dietitian will be assigned soon..</h3>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card card-referral">
+                        <div class="card-header">Refer And Earn</div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-6 col-sm-12">
+                                        <div class="h5">Refer your friend and get points for discount on next purchase.
+                                        </div>
+                                        <div class="h6">Your referral code : <span id="ref_code"> {{user.userdata.referral_code}} </span> </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-sm-12 text-center"
+                                        style="color: #6BCCBA;text-decoration: underline;">
+                                        <div class="h4">Your referral points</div>
+                                        <div class="h5"><span>{{user.userdata.points}}</span> Points</div>
+                                    </div>
+                                    <div class="col-sm-12  d-lg-block d-sm-none d-xs-none d-md-block">
+                                        <div class="btn copy-btn" id="clipboard" >Copy code <i class="fa fa-copy "></i></div>
+                                    </div>
+                                    <div class="col-sm-12 text-center d-lg-none d-sm-block d-md-none">
+                                        <div class="btn share-btn">Share<i class="fa fa-share-alt"
+                                                aria-hidden="true"></i></div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <img src="/static/images/refer2.jpg" class="img-fluid rounded"
+                                            style="width: 300;height: 300px;" alt="">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="row m-lg-4 mt-3">
+                <div class="col-6 text-left ">
+                    <button class="btn" style="height: 100px;font-size: 22px;">Workout videoes</button>
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn h4"style="height: 100px;font-size: 22px;">Recipes videoes</button>
+                </div>
+
+            </div>
+            </div>
+    </section>
+
+    {% if user.userdata.is_last_Day and user.userdata.is_feed_remain %}
+    <section class="section section-interaction p-3  " style=" background-color: #e6e6e6;">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="section-heading">FeedBack Form</div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Please Give Your Feedback about us.
+                        </div>
+                        <div class="card-body">
+                            <form action="/feedback/" method="post">{% csrf_token %}
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="Form-name">Enter Your Feedback</label>
+                                            <textarea  class="form-control" id="Form-name"  name="review"  required></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="weight">Choose Your Profile Image</label>
+                                            <input type="file" accept="image/*" name="image" id="file"  onchange="loadFile(event)"  class="btn btn-outline-success  waves-effect" style="width:90%" >
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-sm-12">
+                                        <div class="form-group text-center">
+                                            <img class="rounded-circle img-fluid z-depth-1-half"
+                                            src="/media/diet_app/avatar.png"
+                                            alt="First slide" id="output" style="width:40%;height:40%;">
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center col-lg-3 col-sm-12 mt-4">
+                                    <button type="submit" class="btn h5">
+                                        Submit
+                                    </button>
+                                </div>
+
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        {% endif %}
+
+      {% if user.userdata.is_week %}
+    <section class="section section-interaction p-3  " style=" background-color: #e6e6e6;">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="section-heading">Weekly Report Form</div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Enter Your Current Weight and Query Here
+                        </div>
+                        <div class="card-body">
+                            <form action="/week_report/" method="post">{% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="new_weight">Old Weight (in kg)</label>
+                                            <input type="number" step="0.01"  class="form-control" id="old_weight" name="old_weight"  value="{{user.userdata.weight}}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="new_weight">Current Weight (in kg)</label>
+                                            <input type="number" step="0.01"  class="form-control" id="new_weight" name="new_weight"  required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="query">Enter Your Query</label>
+                                            <textarea  class="form-control" id="query"  name="query"  required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group text-center mt-4 col-12">
+                                    <button type="submit" class="btn h5">
+                                        Submit
+                                    </button>
+                                </div>
+
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% endif %}
+    {% if user.userdata.dietitian and user.userdata.plan.is_plusplan %}
+    <section class="section section-interaction mt-3 p-2">
+           <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading text-center">Schedual meeting with Dietition</div>
+            </div>
+
+
+            <div class="row smart-plus-user visible">
+                     <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-8 offset-lg-2">
+                                   <form action="/sendrequest/" method="post" onsubmit="return checktime()" >{% csrf_token %}
+                                       <div class="container">
+                                           <div class="row">
+                                            <div class="col-lg-12 col-sm-12 ">
+                                                <div class="form-group d-flex justify-content-center">
+                                                    <label for="dob" style="font-size:25px;margin-top:12px;">Select type</label>
+                                                    <div class="ml-3">
+
+
+                                                        <div class="form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="radiotype"
+                                                                    id="radiochat" value="chat"  required> <i class='fa fa-comment-o fa-3x' id="chatfa"></i>
+                                                            </label>
+                                                        </div>
+                                                        {% if user.userdata.call_count < 4 %}
+                                                        <div class="form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="radiotype"
+                                                                    id="radiocall"  value="call" id="call" required> <i class="fa fa-phone-square  fa-3x" aria-hidden="true" id="callfa"></i>
+                                                            </label>
+                                                            <span class="validity"></span>
+                                                        </div>
+
+
+
+                                                        {% else %}
+                                                         <span  class="form-check-label" style="margin-left:10px;color:#6BCCBA">You have already Completed 4 count for call meeting .</span>
+
+                                                        {% endif %}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="date">Select Date</label>
+                                                    <input type="date" class="form-control" id="date" name="date" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="time">Select Time</label>
+                                                    <input type="time" class="form-control" id="time" name="time" required>
+                                                </div>
+                                                    <span id="timerest" style="color:#6BCCBA;display:none"> Please Select between 1:00 PM to 5:00PM</span>
+                                            </div>
+
+                                            <div class="col-lg-12 col-sm-12 ">
+                                                <div class="form-group d-flex justify-content-center">
+                                                       <button class="btn" type="submit">Send Request</div>
+
+
+                                                </div>
+                                            </div>
+
+                                           </div>
+
+                                   </form>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="section-heading">Interaction history</div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card mb-4">
+                                            <div class="card-header text-center" >your history of interaction with your dietitian
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="">
+                                                <table id="appointments" class="table-bordered table-striped nowrap compact">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Email</th>
+                                                                <th scope="col">Type</th>
+
+
+                                                                <th scope="col">Date</th>
+                                                                <th scope="col">Start Time</th>
+                                                                <th scope="col">End Time</th>
+                                                                <th scope="col">Status</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for met in meetings %}
+                                                            <tr>
+                                                                <td scope="row">{{met.user.firstname}}</td>
+                                                                <td>{{met.user.user.email}}</td>
+                                                                <td>{{met.type}}</td>
+
+                                                                <td>{{met.date}}</td>
+                                                                <td>{{met.time}}</td>
+                                                                <td>{{met.end_time}}</td>
+                                                                {% if met.status == 0%}
+                                                                <td style="color:orange"> Pending..</td>
+                                                                {% elif met.status == 1%}
+                                                                <td style="color:green"> Accepted</td>
+                                                                {% elif met.status == 2%}
+                                                                <td style="color:red">Rejected</td>
+                                                                 {% elif met.status == 3 and met.type == 'chat' %}
+                                                                <td style="color:#6BCCBA">Room Created</td>
+                                                                {% elif met.status == 3 and met.type == 'call' %}
+                                                                <td style="color:#6BCCBA">On Call</td>
+                                                                {% elif met.status == 4%}
+                                                                <td style="color:blue">Completed</td>
+                                                                {% endif %}
+                                                            </tr>
+                                                            {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                     </div>
+            </div>
+               {% elif not user.userdata.dietitian and user.userdata.plan.is_plusplan%}
+               <div class="row smart-user visible mt-2 p-3">
+                <div class="col-12 text-center">
+                    <p class="h5">You Can start Conversation after dietitian is assigned.</p>
+                </div>
+            </div>
+
+                  {% elif not user.userdata.plan.is_plusplan%}
+
+               <div class="row smart-user visible mt-2">
+                <div class="col-12 text-center">
+                    <p class="h5">Curruntly you have smart plan if you want to interact with your dietitian  please update your smart plan to smart plus plan.</p>
+                    <a href="#"><button class="btn  btn-lg" data-toggle="modal" data-target="#changeplanmodal" style="color:#6BCCBA">Change to Plus Plan</button></a>
+                </div>
+            </div>
+
+
+
+
+                {% endif %}
+
+
+
+
+           </div>
+  <div class="modal fade  section-plans row" id="changeplanmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background-color: #6BCCBA">
+        <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Change Plan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <form id="" method="post" action="#">{% csrf_token %}
+      <div class="modal-body mx-3">
+       <div class="row">
+                {% for p in plusplans %}
+                <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                    <div class="card">
+                        <div class="card-header">{{p.title}}</div>
+                        <div class="card-body">
+                            <ul>
+                                <li class="price">Only ₹ {{ amt_pay }} More </li>
+
+                                {% for d in p.split_description %}
+                                <li>{{d}}</li>
+
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn getplan"  id="{{p.id}}" href="/updateplan/{{p.id}}">Get It Now</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+
+      </div>
+
+
+        </form>
+    </div>
+  </div>
+</div>
+
+    </section>
+
+
+
+
+    {% endif %}
+    <div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background-color: #6BCCBA">
+        <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Change Password</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <form id="changepassform" method="post" action="/changepass/">{% csrf_token %}
+      <div class="modal-body mx-3">
+          <div class="md-form mb-5" id="msg">
+
+          </div>
+        <div class="md-form mb-5">
+          <i class="fa fa-user prefix grey-text"></i>
+          <input type="password" id="current_pass" class="form-control validate" name="current_pass" required>
+          <label data-error="wrong" data-success="right" for="current_pass" >Current Password</label>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="password" id="new_pass" class="form-control validate" name="new_pass" required>
+          <label data-error="wrong" data-success="right" for="new_pass">New Password</label>
+        </div>
+
+           <div class="md-form mb-4">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="password" id="new_passc" class="form-control validate" name="new_passc" required>
+          <label data-error="wrong" data-success="right" for="new_passc">Confirm New Password</label>
+        </div>
+
+
+
+
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn" id="submit" type="submit" style="background-color: #6BCCBA;color:white;font-size:14px">Change</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+    {% endblock %}
+    {% block escript %}
+
+       <!-- jQuery library -->
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <!-- Popper JS -->
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+       <!-- Latest compiled JavaScript -->
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+       <!-- ------------------particals js--------------- -->
+       
+
+       <script>
+
+$("#mono").blur(function() {
+        var mobile = $("#mono").val();
+        var regmobile = /^[6-9]\d{9}$/;
+
+        if (!regmobile.test(mobile)) {
+            swal("Invalid mobile number");
+
+        }
+    });
+              $('input:radio[name="radiotype"]').change(
+    function(){
+        if ($(this).is(':checked') && $(this).val() == 'call') {
+            $("#time").attr('min','13:00');
+            $("#time").attr('max','17:00');
+
+            $("#timerest").css('display','inline-block');
+        }
+    });
+
+        $('input:radio[name="radiotype"]').change(
+    function(){
+        if ($(this).is(':checked') && $(this).val() == 'chat') {
+            $("#time").attr('min','');
+            $("#time").attr('max','');
+            $("#timerest").css('display','none');
+        }
+    });
+$("#time").blur(function(){
+    if ($('input:radio[name="radiotype"]').is(':checked') && $(this).val() == 'call') {
+    if ($(this).val() < $("#time").attr('min')){
+    swal("Ooops.. ","Invalid Time",'error');
+     $("#time").val('');
+    }
+    if ($(this).val() > $("#time").attr('max')){
+    swal("Ooops.. ","Invalid Time",'error');
+     $("#time").val('');
+    }
+    }
+});
+       
+       function checktime()
+       {
+           if ($('input:radio[name="radiotype"]').is(':checked') && $(this).val() == 'call') {
+            if ($(this).val() < $("#time").attr('min')){
+            swal("Ooops.. ","Invalid Time",'error');
+             $("#time").val('');
+                return false;
+            }
+            if ($(this).val() > $("#time").attr('max')){
+            swal("Ooops.. ","Invalid Time",'error');
+             $("#time").val('');
+                 return false;
+            }
+            }
+           return true
+       }
+        
+        $("#updateplan").click(function(){
+                $("#plans").toggle();
+        });
+        
+         $(".getplan").click(function(){
+            var pid= this.id;
+
+            $.ajax('/getplan/', {
+
+                type: 'GET',  // http method
+                data: { id:pid  },  // data to submit
+
+                success: function (msg) {
+                    msg=JSON.parse(msg);
+                    $("#plantitle").html(msg['plan_title']);
+                    $("#planprice").html(msg['plan_price']);
+                    $("#plan_id").val(msg['plan_id']);
+                    $('#DivModal').modal('show');
+            
+                    price=$("#planprice").html();
+                    price=parseFloat(price)
+                    
+                    points={{user.userdata.points}}
+                    points=parseFloat(points)
+                    
+                    amt=price-points
+                    $("#amounttopay").html(amt);
+                },
+                error: function (msg) {
+<!--                    $('#DivModal').modal('hide');-->
+                    swal('Something Went Wrong');
+                }
+            });
+        });
+           
+    </script>
+        <script>
+             var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+   
+    
+   end_date =  {{ user.userdata.plan_end_date.year}} + '-' + {{ user.userdata.plan_end_date.month}} + '-' +{{ user.userdata.plan_end_date.day}}
+   
+   document.getElementById("date").min = today;   
+   document.getElementById("date").max = end_date;
+
+   const picker = document.getElementById('date');
+   picker.addEventListener('input', function(e){
+     var day = new Date(this.value).getUTCDay();
+     if(day == 0){
+       e.preventDefault();
+       this.value = '';
+       swal('Holiday','Holiday not allowed','error');
+     }
+   });
+             
+        </script>
+    <script>
+var loadFile = function(event) {
+	var image = document.getElementById('output');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+       
+ $("#clipboard").click(function(){
+ var copyText = document.getElementById("ref_code");
+swal("Copied!", "Your Referral Code is copied to your clipboard!", "success")
+
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val("this is my referral code for sastadiet.com please enter this code when you purchase plan on sasta diet .It will benefit to both of us. referral code :" + copyText.innerHTML).select();
+
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+
+    $temp.remove();
+ });
+        
+const shareBtn = document.querySelector('.share-btn');
+
+shareBtn.addEventListener('click', () => {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Invite on SastaDiet',
+      text: "this is my referral code for sastadiet.com please enter this code when you purchase plan on sasta diet .It will benefit to both of us. referral code :" + $("#ref_code").html(),
+      url: "http://127.0.0.1:8000/" 
+    }).then(() => {
+      console.log('Thanks for sharing!');
+    })
+    .catch(err => {
+      console.log(`Couldn't share because of`, err.message);
+    });
+  } else {
+    console.log('web share not supported');
+  }
+});
+</script>
+      <script type="text/javascript">
+
+    </script>
+       <!-- MDB core JavaScript -->
+       <script type="text/javascript"
+           src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js" integrity="sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg==" crossorigin="anonymous"></script>
+                <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+        <script>
+        $('#appointments').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });
+        </script>
+        <script>
+
+            $("#chatfa").mouseover(function(){
+                   $("#chatfa").removeClass("fa fa-comment-o");
+                $("#chatfa").addClass("fa fa-comment");
+            });
+            $("#chatfa").mouseout(function(){
+                   $("#chatfa").removeClass("fa fa-comment");
+                $("#chatfa").addClass("fa fa-comment-o");
+            });
+
+            $("#callfa").mouseover(function(){
+                   $("#callfa").removeClass("fa fa-phone-square ");
+                $("#callfa").addClass("fa fa-phone fa-2x ");
+            });
+            $("#callfa").mouseout(function(){
+                   $("#callfa").removeClass("fa fa-phone ");
+                $("#callfa").addClass("fa fa-phone-square ");
+            });
+
+
+
+        </script>
+        {% load static %}
+        
+       <script src="{% static 'js/userdashboard.js' %}"></script>
+   
+{% endblock %}

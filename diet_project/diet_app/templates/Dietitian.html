@@ -1,0 +1,735 @@
+    {% extends 'basic.html' %}
+{% block title %}{{user.dietitian.firstname}} | Sasta Diet {% endblock %}
+    {% block ecss %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dietitianDashboard.css'%}">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+
+
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <style>
+                 .section-profile{
+            margin-top: 5.7%;
+        }
+         @media only screen and (max-width: 600px) {
+           .section-profile
+            {
+                margin-top:14% !important;
+            }
+        }
+    </style>
+
+    {% endblock %}
+
+   {% block body %}
+
+    <!-- --------------------scroll top-------------------------------- -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+
+
+
+    <section class="section section-profile p-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="h4 mt-3">Welcome ,{{user.username}}</div>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="btn"  data-toggle="modal" data-target="#modalQuickView">My profile</div>
+                </div>
+            </div>
+        </div>
+ </section>
+
+    <!-- Modal: modalQuickView -->
+    <div class="modal fade" id="modalQuickView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center" style="background-color: #6BCCBA">
+                    <h4 class="modal-title w-100 font-weight-bold" style="background-color: #6BCCBA;color: #17232D;">Edit Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form onsubmit="return fn1()" action="/updatedata/" method="post" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="container">
+                                <div class="row">
+                                    {% if user.userdata.aadhar_image%}
+                                    <div class="col-lg-4 col-sm-12 text-center">
+                                        <img class="rounded-circle img-fluid z-depth-1-half"
+                                            src="/media/{{user.dietitian.image}}"
+                                            alt="First slide" id="output">
+                                        <label for="file" style="cursor: pointer;"> Choose Image</label>
+                                        <input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)"  class="btn btn-outline-success  waves-effect  mt-5" style="width:90%">
+                                    </div>
+                                {% else %}
+                                <div class="col-lg-4 col-sm-12 text-center">
+                                        <img class="rounded-circle img-fluid z-depth-1-half"
+                                            src="/media/{{user.dietitian.image}}"
+                                            alt="First slide" id="output">
+                                        <label for="file" style="cursor: pointer;"> Choose Image</label>
+                                        <input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)"  class="btn btn-outline-success  waves-effect  mt-5" style="width:90%" required>
+                                    </div>
+                                {% endif %}
+
+                                    <div class="col-lg-8 col-sm-12 mt-2">
+                                        <!-- Accordion card -->
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <!-- Material input -->
+                                                <div class="md-form">
+                                                    <input type="text" id="dUsername" class="form-control"
+                                                        value="{{user.username}}" name="uname">
+                                                        <label for="form1">Dietitian username</label>
+                                                </div>
+                                                <!-- Material input -->
+                                                <div class="md-form">
+                                                    <input type="text" id="fName" name="fname" class="form-control" value="{{user.dietitian.firstname}}">
+                                                    <label for="fName">First name</label>
+                                                </div>
+                                                <!-- Material input -->
+                                                <div class="md-form">
+                                                    <input type="text" id="mName" name="mname" class="form-control" value="{{user.dietitian.middlename}}">
+                                                    <label for="mName">Middle name</label>
+                                                </div>
+                                                <!-- Material input -->
+                                                <div class="md-form">
+                                                    <input type="text" id="lName" name="lname" class="form-control" value="{{user.dietitian.lastname}}">
+                                                    <label for="lName">Last name</label>
+                                                </div>
+                                                <div class="md-form">
+                                                    <input type="email" id="email" name="email"class="form-control" value="{{user.email}}">
+                                                    <label for="email">Email</label>
+                                                </div>
+                                                <div class="md-form">
+                                                    <input type="text" id="mono" name="mobile_no" class="form-control" value="{{user.dietitian.mobile_no}}">
+                                                    <label for="mono">Mobile number</label>
+                                                </div>
+                                                <div class="md-form">
+                                                    <input type="text" id="qualification" class="form-control"
+                                                        value="{{user.dietitian.qualification}}" name="qualification">
+                                                        <label for="qualification">Qualification</label>
+                                                </div>
+                                                <button 
+                                                    class="btn btn-outline-success waves-effect">Change</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="mt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                    <div class="a-round tusers">
+                        <div class="a-counter" id="n1">
+                            <script>
+                                var i = 0, howManyTimes = {{user_count}};
+                                function f() {
+
+                                   if(howManyTimes == 0)
+                                       {
+                                           document.getElementById("n1").innerHTML = i;
+                                       }
+                                    else
+                                        {
+                                             i++;
+                                    document.getElementById("n1").innerHTML = i;
+                                    if (i < howManyTimes) {
+                                        setTimeout(f, 500);
+                                    }
+                                        }
+                                }
+                                f();
+
+                            </script>
+
+                        </div>
+                        <div class="a-title">
+                            Total user
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                    <div class="a-round revenue">
+                        <div class="a-counter" id="n2">
+                            <script>
+                                var i2 = 0, howManyTimes2 = {{user.dietitian.revenue}};
+                                function f2() {
+                                    if(howManyTimes2 == 0)
+                                        {
+                                              document.getElementById("n2").innerHTML = i2;
+                                        }
+                                    else
+                                        {
+                                            i2++;
+                                    document.getElementById("n2").innerHTML = i2;
+                                    
+                                    
+                                    if (i2 < howManyTimes2) {
+                                        setTimeout(f2, 5);
+                                    }
+                                        }
+                                }
+                                f2();
+                            </script>
+
+                        </div>
+                        <div class="a-title">
+                            Revenue
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12">
+                    <div class="a-round preq">
+                        <div class="a-counter" id="n3">
+                            <script>
+                                var i3 = 0, howManyTimes3 = {{  diet_pending_smart_count  }};
+                                function f3() {
+
+                                    if(howManyTimes3 == 0)
+                                        
+                                        {
+                                            document.getElementById("n3").innerHTML = i3;
+                                        }
+                                    else{
+                                        i3++;
+                                    document.getElementById("n3").innerHTML = i3;
+                                    if (i3 < howManyTimes3) {
+                                        setTimeout(f3, 500);
+                                    }
+                                    }
+                                }
+                                f3();
+                            </script>
+
+                        </div>
+                        <div class="a-title">
+                            Pending request
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-myuser mt-3 p-3">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">My users</div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header text-center" style="background-color: #6BCCBA;">Smart plan users
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                            <table id="SP_user" class="table-bordered table-striped nowrap compact">
+
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">City</th>
+                                            <th scope="col">Mobile number</th>
+                                            <th scope="col">Call count</th>
+                                            <th scope="col">How many times has come?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for us in user_smart %}
+                                        <tr>
+                                            <td scope="row">{{us.firstname}} {{us.lastname}}</td>
+                                            <td>{{us.user.email}}</td>
+                                            <td>{{us.city}}</td>
+                                            <td>{{us.mobile_no}}</td>
+                                            <td>{{us.call_count}}</td>
+
+                                            <td>{{us.plan_buy_count }}</td>
+
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header text-center" style="background-color: #6BCCBA;">Smart+ plan users
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <table id="SPP_user" class="table-bordered table-striped nowrap compact">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">City</th>
+                                            <th scope="col">Mobile number</th>
+                                            <th scope="col">Call count</th>
+                                            <th scope="col">How many times has come?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for us in user_plus %}
+                                        <tr>
+                                            <td scope="row">{{us.firstname}} {{us.lastname}}</td>
+                                            <td>{{us.user.email}}</td>
+                                            <td>{{us.city}}</td>
+                                            <td>{{us.mobile_no}}</td>
+                                            <td>{{us.call_count}}</td>
+                                            <td>{{us.plan_buy_count }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">User Waiting for Diet Chart</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-header text-center" style="background-color: #6BCCBA;">
+                            User Waiting for Diet Chart
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <table id="PR" class="table-bordered table-striped nowrap compact">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">City</th>
+                                            <th scope="col">Mobile number</th>
+
+                                            <th scope="col">Plan Type</th>
+                                            <th scope="col">Joined At</th>
+                                            <th scope="col">Workout?</th>
+                                            <th scope="col">Workout Type</th>
+                                            <th scope="col">Workout Time</th>
+                                            <th scope="col">How many time in day</th>
+                                            <th scope="col">How many days in week</th>
+
+                                            <th scope="col">Goal</th>
+                                            <th scope="col">Veg/Non_veg</th>
+                                            <th scope="col">Dishes</th>
+                                            <th scope="col">Have_Disease</th>
+                                            <th scope="col">Supplements</th>
+                                            <th scope="col">More Info</th>
+
+                                            <th scope="col">Send diet chart</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for dp in diet_pending_smart %}
+                                        <tr>
+                                            
+                                            <td scope="row">{{dp.firstname}} {{dp.lasttname}}</td>
+                                            <td>{{dp.user.email}}</td>
+                                            <td>{{dp.city}}</td>
+                                            <td>{{dp.mobile_no}}</td>
+
+                                            <td>{{dp.plan.title}}</td>
+                                            <td>{{dp.created_at}}</td>
+                                            {% if dp.userhealthdata.workout %}
+                                            <td scope="col">Yes</td>
+                                            {% else %}
+                                            <td scope="col">No</td>
+                                            {% endif %}
+
+                                            {% if dp.userhealthdata.workout_type %}
+                                            <td scope="col">{{dp.userhealthdata.workout_type}}</td>
+
+                                            {% else %}
+                                            <td scope="col">No Workout</td>
+                                            {% endif %}
+
+
+                                            {% if dp.userhealthdata.workout_time %}
+                                            <td scope="col">{{dp.userhealthdata.workout_time}}</td>
+
+                                            {% else %}
+                                            <td scope="col">No Workout</td>
+                                            {% endif %}
+
+                                            {% if dp.userhealthdata.workout_time_inday %}
+                                            <td scope="col">{{dp.userhealthdata.workout_time_inday}}</td>
+
+                                            {% else %}
+                                            <td scope="col">No Workout</td>
+                                            {% endif %}
+
+                                            {% if dp.userhealthdata.workout_day_inweek %}
+                                            <td scope="col">{{dp.userhealthdata.workout_day_inweek}}</td>
+
+                                            {% else %}
+                                            <td scope="col">No Workout</td>
+                                            {% endif %}
+
+
+
+                                            <td scope="col">{{dp.userhealthdata.want_to_achive}}</td>
+                                            <td scope="col">{{dp.userhealthdata.type}}</td>
+                                            <td scope="col">{{dp.userhealthdata.dishes}}</td>
+                                            {% if dp.userhealthdata.have_disease %}
+                                            <td cope="col">Yes</th>
+                                            {% else %}
+                                             <td cope="col">No</th>
+                                            {% endif %}
+                                            <td scope="col">{{dp.userhealthdata.supplements}}</td>
+                                            <td scope="col">{{dp.userhealthdata.about}}</td>
+
+                                            <td><button class="btn btn-outline-success waves-effect btn-sm sendchart" id="{{dp.user.id}}" ><i
+                                                class="fa fa-envelope fa-2x" aria-hidden="true"></i></button>
+                                            </td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section p-3 mt-2">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">Meeting Requests</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-header text-center" style="background-color: #6BCCBA;">Pending requests
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <table id="PRA" class="table-bordered table-striped nowrap compact">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Plan type</th>
+                                            <th scope="col">Meeting type</th>
+                                            <th scope="col">Schedule Date</th>
+                                            <th scope="col">Start Time</th>
+                                            <th scope="col">End Time</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for mp in pending_meeting_request%}
+                                        <tr>
+                                            <td scope="row">{{mp.user.firstname }} {{mp.user.lastname }}</td>
+                                            <td>{{mp.user.mobile_no }}</td>
+                                            <td>{{mp.user.plan.title }}</td>
+                                            <td>{{mp.type }}</td>
+                                            <td>{{mp.date }}</td>
+                                            <td>{{mp.time }}</td>
+                                            <td>{{mp.end_time }}</td>
+                                            <td><a href="/acceptrequest/{{mp.id}}"><button class="btn btn-outline-success waves-effect btn-sm"><i
+                                                        class="fa fa-check fa-2x"
+                                                        aria-hidden="true"></i></button></a><a href="/deleterequest/{{mp.id}}"><button
+                                                    class="btn btn-outline-danger waves-effect btn-sm"><i
+                                                        class="fa fa-times fa-2x" aria-hidden="true"></i></button></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 mt-2">
+                    <div class="card mb-4">
+                        <div class="card-header text-center" style="background-color: #6BCCBA;">Accepted requests
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <table id="ARA" class="table-bordered table-striped nowrap compact">
+                                    <thead>
+
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Plan type</th>
+                                            <th scope="col">Meeting type</th>
+                                            <th scope="col">Schedule Date</th>
+                                            <th scope="col">Start Time</th>
+                                            <th scope="col">End Time</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ap in accepted_request%}
+                                        <tr>
+                                            
+                                            <td scope="row">{{ ap.user.firstname }} {{ ap.user.lastname }}</td>
+                                            <td>{{ap.user.mobile_no}}</td>
+                                            <td>{{ap.user.plan.title}}</td>
+                                            <td>{{ap.type}}</td>
+                                            <td>{{ap.date}}</td>
+                                            <td>{{ap.time}}</td>
+                                            <td>{{ap.end_time}}</td>
+
+                                            {% if ap.type == 'chat' %}
+                                            <td><a href="/create_room/{{ap.id}}" target="_blank">
+                                                <button class="btn btn-outline-success waves-effect btn-sm"><i
+                                                        class="fa fa-home fa-2x" aria-hidden="true"></i></button></a>
+                                            </td>
+                                            {% else %}
+
+                                                    <td>  <a href="/endcall/{{ap.id}}"><button class="btn btn-outline-success waves-effect btn-sm"><i
+                                                        class="fa fa-check fa-2x"
+                                                        aria-hidden="true"></i></button></a></td>
+
+                                            {% endif %}
+                                        </tr>
+                                        {%endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section mb-3">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">User's Weekly Report</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-header text-center" style="background-color: #6BCCBA;">
+                            User's Weekly Report
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <table id="WR" class="table-bordered table-striped nowrap compact">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+
+                                            <th scope="col">Mobile number</th>
+
+                                            <th scope="col">Old Weight</th>
+
+                                            <th scope="col">New Weight</th>
+                                            <th scope="col">Query</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for wp in weekly_report%}
+                                        <tr>
+
+                                            <td scope="row">{{wp.user.firstname}} {{wp.user.lasttname}}</td>
+                                            <td>{{wp.user.mobile_no}}</td>
+                                            <td>{{wp.old_weight}}</td>
+                                            <td>{{wp.new_weight}}</td>
+
+                                            <td>{{wp.query}}</td>
+                                            <td>{{wp.date}}</td>
+
+
+                                        </tr>
+                                     {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block escript %}
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/static/js/main.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+    <script>
+           
+                
+                $('#SP_user').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });
+    $('#SPP_user').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });
+    $('#PR').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });
+    $('#PRA').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });
+    $('#ARA').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });
+    $('#WR').DataTable({
+         "pageLength": 10,
+         "autoWidth": false,
+         "scrollX": true,
+    });            
+                
+           
+    </script>
+     <script>
+
+        $(".sendchart").click(function(){
+            var id= this.id;
+            $.ajax('senddietchart/', {
+
+                type: 'GET',  // http method
+                data: { id:id  },  // data to submit
+
+                success: function (data) {
+                    data=JSON.parse(data);
+                    if(data['msg'] == "chart sent")
+                    {
+                        window.open(
+                      'https://mail.google.com/mail/?view=cm&fs=1&to='+data['email'],
+                      '_blank' // <- This is what makes it open in a new window.
+
+                     );
+                    location.reload();
+
+
+                    }
+                    else
+                    {
+                        alert('not sent')
+                    }
+
+                },
+                error: function (msg) {
+<!--                    $('#DivModal').modal('hide');-->
+
+                }
+            });
+        })
+         $("#mono").blur(function(){
+              var regxPhone = /^[7-9]\d{9}$/;
+        var mobileno = $("#mono").val();
+        if (regxPhone.test(mobileno) == false) {
+            swal("Invalid Mobile No");
+
+        }
+         })
+
+         $("#email").blur(function(){
+              var emailregx = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        var emailid = $("#email").val();
+        if (emailregx.test(emailid) == false) {
+            swal("Invalid Email Id");
+
+        }
+         })
+        function fn1()
+        {
+            var regxPhone = /^[7-9]\d{9}$/;
+            var mobileno = $("#mono").val();
+            if (regxPhone.test(mobileno) == false) {
+            swal("Invalid Mobile No");
+            return false
+            }
+
+               var emailregx = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        var emailid = $("#email").val();
+        if (emailregx.test(emailid) == false) {
+            swal("Invalid Email Id");
+               return false
+        }
+        return true
+        }
+    </script>
+    <script>
+var loadFile = function(event) {
+	var image = document.getElementById('output');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+</script>
+{% endblock %}
+
+{% block script %}
+    
+{% endblock %}

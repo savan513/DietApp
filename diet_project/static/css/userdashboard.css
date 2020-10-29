@@ -1,0 +1,292 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.section .section-heading{
+    font-size:48px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-transform: uppercase;
+    position: relative;
+    font-family: 'Sniglet', cursive !important;
+}
+
+.section .section-heading:after,
+.section .section-heading:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    
+}
+.section .section-heading:after {
+    height: 2px;
+    background-color: rgba(252, 92, 15, 0.46);
+    left: 25%;
+    right: 25%;
+}
+
+.section .section-heading:before {
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    background-color: #fc5c0f;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: -6px;
+    z-index: 9;
+    border-radius: 50%;
+}
+.card{
+    height: 100%;
+}
+.card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* --------------------------scroll top-------------------------  */
+.scroll-top{
+    bottom: 25px;
+    cursor: pointer;
+    height: 50px;
+    position: fixed;
+    right: 25px;
+    text-align: center;
+    width: 50px;
+    z-index: 9999;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 30%;
+    background-color: #6BCCBA;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5)
+}
+
+.scroll-top i {
+    line-height: 50px;
+    color: #fff;
+    font-size: 25px;
+}
+
+.scroll-top.not-visible {
+bottom: -50px;
+visibility: hidden;
+opacity: 0;
+}
+
+.scroll-top:hover {
+background-color: #17232D;
+}
+
+/* --------------------------user profile------------------------------ */
+
+.section-profile .btn{
+    background-color: white;
+    color:#17232D;
+    font-size: 16px;
+}
+.section-profile .btn:hover{
+    background-color: #17232D;
+    color:white;
+}
+.section-profile .h4
+{
+   font-size: 28px;
+   color: #17232D;
+}
+
+.section-profile
+{
+    background-color: #6BCCBA;
+    color:white;
+}
+
+/* -----------------------section refferal----------------------------- */
+
+.section-referral
+{
+    background-color: #17232D;
+    color:white;
+}
+
+/* -----------------------section plan detail----------------------------- */
+
+.section-plan-detail ul{
+    list-style-type: none;
+    margin-top: 2%;
+}
+.section-plan-detail,.section-user-detail{
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("../../static/images/banner_top.jpg") fixed no-repeat;
+
+}
+
+.section-plan-detail li{
+border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+.section-plan-detail li:hover{
+    border-bottom: 2px solid #6BCCBA;
+    border-left: 2px solid #6BCCBA;
+    border-right: 2px solid #6BCCBA;
+     font-weight: bold;
+     color: #6BCCBA;
+    }
+.section-plan-detail .card-header{
+    font-size: 22px;
+    text-align: center;
+    background-color: #6BCCBA;
+    color: #fff;
+}
+.section-plan-detail .card:hover .card-header{
+    background-color: #17232D;
+}
+
+.card-referral .card-body{
+    background-color: #F5F5F5;
+}
+
+.section-plan-detail .btn{
+    background-color: #6BCCBA;
+    color:#fff;
+    font-size: 16px;
+}
+.section-plan-detail .btn:hover{
+    background-color: #17232D;
+    color:white;
+}
+/* .card-referral .share-btn i{
+    width: 50px;
+    height: 50px;
+   border-radius: 10px;
+    background-color: #17232D;
+    color: #fff;
+    margin-left: 2px;
+    padding-top: 2px;
+}
+.card-referral .share-btn{
+    border-radius: 40px;
+    font-size: 40px;
+} */
+
+.card-referral .share-btn i{
+    width: 30px;
+    height: 30px;
+   border-radius: 10px;
+    background-color: #17232D;
+    color: #fff;
+    margin-left: 10px;
+    padding-top: 4px;
+}
+.card-referral .share-btn{
+    border-radius: 40px;
+    font-size: 20px;
+}
+.card-referral .copy-btn i{
+    width: 30px;
+    height: 30px;
+   border-radius: 10px;
+    background-color: #17232D;
+    color: #fff;
+    margin-left: 5px;
+    padding-top: 2px;
+}
+.card-referral .copy-btn{
+    border-radius: 40px;
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    .copy-btn {
+     display: none;
+    }
+  }
+
+
+/* ---------------------------section interaction------------------------- */
+.section-interaction .btn{
+    background-color: white;
+    color:#17232D;
+    font-size: 16px;
+}
+.section-interaction .btn:hover{
+    background-color: #6BCCBA;
+    color:white;
+
+
+}
+.section-interaction .visible{
+    display: block;
+}
+.section-interaction .not-visible{
+    display: none;
+}
+
+.section-interaction label{
+    font-size: 18px;
+
+}
+.section-interaction .card-header{
+    font-size: 22px;
+    text-align: center;
+    background-color: #6BCCBA;
+    color: #fff;
+}
+.section-interaction .card:hover .card-header{
+    background-color: #17232D;
+}
+/* ---------------------user detail---------------------- */
+.section-user-detail .btn{
+    background-color: #6BCCBA;
+    color:#17232D;
+    font-size: 14px;
+}
+.section-user-detail .btn:hover{
+    background-color: #17232D;
+    color:white;
+}
+.section-user-detail .card-header{
+    background-color: #6BCCBA;
+    color:#17232D;
+}
+
+.section-user-detail .section-heading{
+    color: #fff;
+}
+
+
+/* ------------------------------history-------------------------- */
+.my-custom-scrollbar {
+    position: relative;
+    height: 250px;
+    overflow: auto;
+ }
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.title{
+    font-family: 'Arvo', serif;
+}
+
+th{
+    background-color: #17232D;
+    color: #17232D;
+}
+
+.section-interaction i{
+color: #6BCCBA;
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 8px;
+}
+.section-interaction i:hover{
+ color: #17232D;
+        background-color: #6BCCBA;
+        width: 70px;
+        height: 70px;
+}

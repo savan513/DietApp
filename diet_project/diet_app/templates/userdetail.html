@@ -1,0 +1,782 @@
+
+    {% extends 'basic.html' %}
+
+    {% block title %} Details | Sasta Diet {% endblock %}
+    {% block ecss %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="/static/css/main.css"> -->
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+   
+    {% endblock %}
+    {% block css %}
+      *{
+    padding: 0px;
+    margin: 0px;
+}
+
+.section .section-heading{
+    font-size:48px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-transform: uppercase;
+    position: relative;
+    color: #fff;
+}
+
+.section .section-heading:after,
+.section .section-heading:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+}
+.section .section-heading:after {
+    height: 2px;
+    background-color: rgba(252, 92, 15, 0.46);
+    left: 25%;
+    right: 25%;
+}
+
+.section .section-heading:before {
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    background-color: #fc5c0f;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: -6px;
+    z-index: 9;
+    border-radius: 50%;
+}
+.card{
+    height: 100%;
+}
+.card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* --------------------------scroll top-------------------------  */
+.scroll-top{
+    bottom: 25px;
+    cursor: pointer;
+    height: 50px;
+    position: fixed;
+    right: 25px;
+    text-align: center;
+    width: 50px;
+    z-index: 9999;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 30%;
+    background-color: #6BCCBA;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5)
+}
+
+.scroll-top i {
+    line-height: 50px;
+    color: #fff;
+    font-size: 25px;
+}
+
+.scroll-top.not-visible {
+bottom: -50px;
+visibility: hidden;
+opacity: 0;
+}
+
+.scroll-top:hover {
+background-color: #17232D;
+}
+
+.section-user-detail .btn{
+        background-color: #6BCCBA;
+        color:#17232D;
+        font-size: 14px;
+    }
+    .section-user-detail .btn:hover{
+        background-color: #17232D;
+        color:white;
+    }
+    .section-user-detail .card-header{
+        background-color: #6BCCBA;
+        color:#17232D;
+    }
+    .section-user-detail{
+        background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("../../static/images/banner_top.jpg") fixed no-repeat;
+
+    }
+
+ form.registration-form fieldset {
+            display: none;
+        }
+
+     @media only screen and (max-width: 600px) {
+           .section-user-detail
+            {
+                margin-top:12% !important;
+            }
+        }
+
+  
+  {% endblock %}
+{% block body %}
+
+    <!-- --------------------scroll top-------------------------------- -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    <section class="section section-user-detail pb-3" style="margin-top: 6%;">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="section-heading">your details</div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Please fill this form for get your diet in 24 hours.
+                    </div>
+                    <div class="card-body">
+                            {% if user.is_authenticated %}
+                        <form role="form" class="registration-form" action='/checkfilleddata/' method="post">
+                        {% else %}
+                         <form role="form" class="registration-form" action='/filluserdata/' method="post">
+                             {% endif %}
+                                        <fieldset>
+                                              <div class="row">
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="fname">First Name</label>
+                                        <input type="text" class="form-control" id="fname" name="firstname" value="{{user.userdata.firstname}} " required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="mname">Middle Name</label>
+                                        <input type="text" class="form-control" id="mname" name="middlename" value="{{user.userdata.middlename}}  "required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="lname">Last Name</label>
+                                        <input type="text" class="form-control" id="lname" name="lastname" value="{{user.userdata.lastname}} "required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="age">Age</label>
+                                        <input type="number" class="form-control" id="age" name="age" value="{{user.userdata.age}}"  required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="gender">Gender</label>
+                                            <div class="mt-1">
+                                               {% if user.is_authenticated %}
+                                                     {% if user.userdata.gender == "Male" or user.userdata.gender == "male"%}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="male" name="radiogender" id="radiomale" required checked>Male
+                                                </label>
+                                            </div>
+                                            {% else %}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="male" name="radiogender" id="radiomale" required>Male
+                                                </label>
+                                            </div>
+                                            {% endif %}
+                                            {% if user.userdata.gender == "Female" or user.userdata.gender == "female"%}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="female" name="radiogender" id="radiofemale" checked>Female
+                                                </label>
+                                            </div>
+                                            {% else %}
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="female" name="radiogender" id="radiofemale">Female
+                                                </label>
+                                            </div>
+                                            {% endif %}
+                                                
+                                                {%  else %}
+                                               <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="male" name="radiogender" id="radiomale" required>Male
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" value="female" name="radiogender" id="radiofemale">Female
+                                                </label>
+                                            </div>
+                                                {% endif %}
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="mono">Mobile number</label>
+                                        <input type="number" class="form-control" id="mono" name="mobile_no" value = "{{user.userdata.mobile_no}}" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="address">City</label>
+                                        <input class="form-control" id="address" name="address" value = "{{user.userdata.city}}"  required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="height">Height (in feet)</label>
+                                        <input type="number" step="0.01" class="form-control" id="height" name="height" step="2" value = "{{user.userdata.height}}"  required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="weight">weight (in kg)</label>
+                                        <input type="number" step="0.01" class="form-control" id="weight" name="weight" value = "{{user.userdata.weight}}"  required>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                                    <button type="button" class="btn btn-next">Next</button>
+
+                                                </div>
+                            </div>
+
+
+                                        </fieldset>
+                                        <fieldset>
+
+                                            <div class="row">
+                                                <div class="col-lg-12 col-sm-12 text-center">
+                                                    <div class="form-group">
+                                                        <label for="dob">Do You Workout?</label>
+                                                        <div class="mt-1">
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if user.userdata.userhealthdata.workout %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-workout" id="radio-workout-yes"
+                                                                        onchange="enabledCon(this)" value="yes" checked required>Yes
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-workout" id="radio-workout-yes"
+                                                                        onchange="enabledCon(this)" value="yes"  required>Yes
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if not user.userdata.userhealthdata.workout %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                       value="no" onchange="disabledCon(this)" name="radio-workout"
+                                                                        id="radio-workout-No" checked>No
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                       value="no" onchange="disabledCon(this)" name="radio-workout"
+                                                                        id="radio-workout-No" >No
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+            
+                                                        </div>
+            
+                                                    </div>
+            
+                                                </div>
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="workout-type">Workout type</label>
+                                                        <select class="form-control mdb-select colorful-select dropdown-primary md-form" id="workout-type" name="workout_type" multiple>
+                                                            <option value="">--</option>
+                                                             {% if not user.userdata.userhealthdata.workout_type %}
+                                                                <option value="walking">walking</option>
+                                                                <option value="running">running</option>
+                                                                <option value="gym">gym</option>
+                                                                <option value="zumba">zumba</option>
+                                                            {% else %}
+                                                           
+                                                                    {% if 'walking' in  user.userdata.userhealthdata.workout_type  %}
+                                                                        <option value="walking" selected>walking</option>
+                                                                    {% else %}
+                                                                        <option value="walking">walking</option>
+                                                                    {% endif %}
+                                                                    {% if 'running' in  user.userdata.userhealthdata.workout_type  %}
+                                                                        <option value="running" selected>running</option>
+                                                                    {% else %}
+                                                                        <option value="running">running</option>
+                                                                    {% endif %}
+                                                                    {% if 'gym' in  user.userdata.userhealthdata.workout_type  %}
+                                                                       <option value="gym" selected>gym</option>
+                                                                    {% else %}
+                                                                        <option value="gym">gym</option>
+                                                                    {% endif %}
+                                                                    {% if 'zumba' in  user.userdata.userhealthdata.workout_type  %}
+                                                                       <option value="zumba" selected>zumba</option>
+                                                                    {% else %}
+                                                                        <option value="zumba">zumba</option>
+                                                                    {% endif %}
+                                                           
+
+                                                             {% endif %}
+                                                             
+
+
+
+                                                        </select>
+                                                    </div>
+            
+                                                </div>
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="dob">When do you workout?</label>
+                                                        <div class="mt-1">
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if user.userdata.userhealthdata.workout_time == 'morning' %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-workout-time" 
+                                                                        value="morning"  checked id="radio-workout-morning">Morning
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-workout-time"
+                                                                        value="morning" id="radio-workout-morning">Morning
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if user.userdata.userhealthdata.workout_time == 'evening' %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                           value="evening"   
+                                                                        name="radio-workout-time" id="radio-workout-evening" checked>Evening
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                           value="evening"
+                                                                        name="radio-workout-time" id="radio-workout-evening">Evening
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+            
+                                                        </div>
+            
+                                                    </div>
+                                                                                                                    
+                                                </div>
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="Workout-time">How much time do you workout in a day? </label>
+                                                        <input type="number" class="form-control" id="Workout-time" name="time_day"
+                                                            placeholder="enter minutes i.e 30,90 etc." value="{{user.userdata.userhealthdata.workout_time_inday}}" >
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="Workout-day">How many days do you workout in a week?</label>
+                                                        <input type="number" class="form-control" id="Workout-day" name="day_week"
+                                                            placeholder="enter number of days i.e 3,4 etc." value="{{user.userdata.userhealthdata.workout_day_inweek}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="row mt-2">
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="goal-dietplan">What are looking to achive by the diet
+                                                            plan?</label>
+                                                        <select class="form-control" id="goal-dietplan" name="achive" required>
+                                                            <option value="">--</option>
+                                                            {% if  user.userdata.userhealthdata.want_to_achive == 'weight-loss' %}
+                                                            <option value="weight-loss" selected>weight loss</option>
+                                                            {% else %}
+                                                            <option value="weight-loss">weight loss</option>
+                                                            {% endif %}
+                                                            {% if  user.userdata.userhealthdata.want_to_achive == 'weight-gain' %}
+                                                            <option value="weight-gain" selected>weight gain</option>
+                                                            {% else %}
+                                                            <option value="weight-gain">weight gain</option>
+                                                            {% endif %}
+                                                            {% if  user.userdata.userhealthdata.want_to_achive == 'muscle-gain' %}
+                                                            <option value="muscle-gain" selected>muscle gain</option>
+                                                            {% else %}
+                                                            <option value="muscle-gain">muscle gain</option>
+                                                             {% endif %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+            
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="type-dietplan">Which type is suitable to you?</label>
+                                                        <select class="form-control" id="type-dietplan" name="food_type" required>
+                                                            <option value="">--</option>
+                                                            {% if user.userdata.userhealthdata.type == 'veg' %}
+                                                            <option value="veg" selected>vegetarian</option>
+                                                            {% else %}
+                                                                <option value="veg" >vegetarian</option>
+                                                            {% endif %}
+                                                            {% if user.userdata.userhealthdata.type == 'non-veg' %}
+                                                            <option value="non-veg" selected>non-vegetaian</option>
+                                                            {% else %}
+                                                            <option value="non-veg">non-vegetaian</option>
+                                                            {% endif %}
+                                                            {% if user.userdata.userhealthdata.type == 'veg-egg' %}
+                                                            <option value="veg-egg" selected>vegetarian with eggs</option>
+                                                            {% else %}
+                                                            <option value="veg-egg">vegetarian with eggs</option>
+                                                            {% endif %}
+                                                        </select>
+                                                    </div>
+            
+                                                </div>
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="dob">Which dishes are you prefered?</label>
+                                                        <div class="mt-1">
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if user.userdata.userhealthdata.dishes == 'north_indian' %}
+                                                                    <input type="radio" class="form-check-input" name="radio-dishes"
+                                                                        id="radio-dish-north"
+                                                                           value="north_indian" checked required>North Indian
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input" name="radio-dishes"
+                                                                        id="radio-dish-north"
+                                                                           value="north_indian" checked required>North Indian
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if user.userdata.userhealthdata.dishes == 'south_indian' %}
+                                                                    <input type="radio" class="form-check-input" name="radio-dishes"
+                                                                     value="south_indian"  checked  id="radio-dish-south">South Indian
+                                                                    {% else %}
+
+                                                                    <input type="radio" class="form-check-input" name="radio-dishes"
+                                                                     value="south_indian"    id="radio-dish-south">South Indian
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+            
+                                                        </div>
+            
+                                                    </div>
+            
+                                                </div>
+            
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="">Do You have any disease or allergies?</label>
+                                                        <div class="mt-1">
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+                                                                    {% if user.userdata.userhealthdata.have_disease%}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-disease" id="radio-disease-yes" checked value="yes" required>Yes
+
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-disease" id="radio-disease-yes" value="yes" required>Yes
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check-inline">
+                                                                <label class="form-check-label">
+
+                                                                    {% if not user.userdata.userhealthdata.have_disease%}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-disease" value="no" checked id="radio-disease-No">No
+                                                                    {% else %}
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="radio-disease" value="no" id="radio-disease-No">No
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+            
+                                                        </div>
+            
+                                                    </div>
+            
+                                                </div>
+            
+                                                <div class="col-lg-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label for="text-supplement">Are you taking any supplements?</label>
+                                                        <input type="text" class="form-control" id="supplement"
+                                                            placeholder="if yes, then write i.e whey protein , creatine etc." value="{{user.userdata.userhealthdata.supplements}}" name ="protien" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="details">Please tell more about yourself.</label>
+                                                        <textarea class="form-control" rows="3" id="details"
+                                                            placeholder="write more about your self i.e what are you eating in presant? , any allergies or disease etc.. in detail"
+                                                                  name="about"
+                                                            required>{{user.userdata.userhealthdata.about}}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 text-center">
+
+                                                    <button type="button" class="btn btn-previous">Previous</button>
+                                                    <button type="submit" class="btn">Submit</button>
+                                                </div>
+                                            </div>
+                                           
+                                        </fieldset>
+                                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  {% endblock %}
+    {% block escript %}
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+
+
+
+
+<script>
+     $(document).ready(function () {
+            $('.registration-form fieldset:first-child').fadeIn('slow');
+
+            // $('.registration-form input[type="text"]').on('focus', function () {
+            //     $(this).removeClass('input-error');
+            // });
+
+            // next step
+            $('.registration-form .btn-next').on('click', function () {
+               
+                var parent_fieldset = $(this).parents('fieldset');
+               // var next_step = true;
+                if($('#fname').val() == "")
+                {
+                    swal("please enter first name");
+                    next_step = false;
+                }
+                else if($('#mname').val() == "")
+                {
+                    swal("please enter middle name");
+                    next_step = false;
+                }
+                else if($('#lname').val() == "")
+                {
+                    swal("please enter last name");
+                    next_step = false;
+                }
+                else if($('#age').val() == "")
+                {
+                    swal("please enter age");
+                    next_step = false;
+                }
+                else if(!($("#radiomale").is(":checked")) && !($("#radiofemale").is(":checked")))
+                {
+                    swal("please select gender");
+                    next_step = false;
+                }
+                else if($('#mono').val() == "")
+                {
+                    swal("please enter mobile no");
+                    next_step = false;
+                }
+                else if($('#address').val() == "")
+                {
+                    swal("please enter address");
+                    next_step = false;
+                }
+                else if($('#height').val() == "")
+                {
+                    swal("please enter height");
+                    next_step = false;
+                }
+                else if($('#weight').val() == "")
+                {
+                    swal("please enter weight");
+                    next_step = false;
+                }
+                else{
+                    next_step=true;
+                }
+                
+
+                if (next_step) {
+                    parent_fieldset.fadeOut(400, function () {
+                        $(this).next().fadeIn();
+                    });
+                }
+
+            });
+
+            // previous step
+            $('.registration-form .btn-previous').on('click', function () {
+                $(this).parents('fieldset').fadeOut(400, function () {
+                    $(this).prev().fadeIn();
+                });
+            });
+
+            // submit
+            $('.registration-form').on('submit', function (e) {
+                  
+                $(this).find('input[type="text"],input[type="email"]').each(function () {
+                    if ($(this).val() == "") {
+                        e.preventDefault();
+                        $(this).addClass('input-error');
+                       
+                    } else {
+                        $(this).removeClass('input-error');
+                       
+                    }
+                });
+
+            });
+
+
+        });
+
+
+        $(document).ready(function () {
+            {% if user.userdata.userhealthdata.workout %}
+                document.getElementById("workout-type").disabled = false;
+                document.getElementById("radio-workout-morning").disabled = false;
+                document.getElementById("radio-workout-evening").disabled = false;
+                document.getElementById("Workout-time").disabled = false;
+                document.getElementById("Workout-day").disabled = false;
+            {% else %}
+            document.getElementById("workout-type").disabled = true;
+            document.getElementById("radio-workout-morning").disabled = true;
+            document.getElementById("radio-workout-evening").disabled = true;
+            document.getElementById("Workout-time").disabled = true;
+            document.getElementById("Workout-day").disabled = true;
+            {% endif %}
+
+        })
+        function enabledCon(r) {
+
+            if (r.checked) {
+                document.getElementById("workout-type").disabled = false;
+                document.getElementById("radio-workout-morning").disabled = false;
+                document.getElementById("radio-workout-evening").disabled = false;
+                document.getElementById("Workout-time").disabled = false;
+                document.getElementById("Workout-day").disabled = false;
+
+                document.getElementById("workout-type").required = true;
+                document.getElementById("radio-workout-morning").required = true;
+                document.getElementById("radio-workout-evening").required = true;
+                document.getElementById("Workout-time").required = true;
+                document.getElementById("Workout-day").required = true;
+            }
+            else {
+                document.getElementById("workout-type").disabled = true;
+                document.getElementById("radio-workout-morning").disabled = true;
+                document.getElementById("radio-workout-evening").disabled = true;
+                document.getElementById("Workout-time").disabled = true;
+                document.getElementById("Workout-day").disabled = true;
+
+            }
+        }
+
+        function disabledCon(r) {
+
+            if (r.checked) {
+                document.getElementById("workout-type").disabled = true;
+                document.getElementById("radio-workout-morning").disabled = true;
+                document.getElementById("radio-workout-evening").disabled = true;
+                document.getElementById("Workout-time").disabled = true;
+                document.getElementById("Workout-day").disabled = true;
+
+            }
+            else {
+                document.getElementById("workout-type").disabled = false;
+                document.getElementById("radio-workout-morning").disabled = false;
+                document.getElementById("radio-workout-evening").disabled = false;
+                document.getElementById("Workout-time").disabled = false;
+                document.getElementById("Workout-day").disabled = false;
+
+                document.getElementById("workout-type").required = true;
+                document.getElementById("radio-workout-morning").required = true;
+                document.getElementById("radio-workout-evening").required = true;
+                document.getElementById("Workout-time").required = true;
+                document.getElementById("Workout-day").required = true;
+
+            }
+        }
+
+</script>
+
+
+<script src="/static/js/main.js"></script>
+      {% endblock %}
+
+
+     
+    {% block script %}
+
+
+
+    $("#mono").blur(function() {
+        var regxPhone = /^[7-9]\d{9}$/;
+        var mobileno = $(this).val();
+        if (regxPhone.test(mobileno) == false) {
+            swal("Invalid Mobile No");
+$(this).val('');
+        }
+    })
+
+    $(window).on('scroll', function () {
+    if ($(this).scrollTop() > 200) {
+                   $('.scroll-top').removeClass('not-visible');
+               } else {
+                   $('.scroll-top').addClass('not-visible');
+               }
+               //console.log($(this).scrollTop());
+           });
+           $('.scroll-top').on('click', function (event) {
+               $('html,body').animate({
+                   scrollTop: 0
+               }, 1000);
+           });
+    function checksubmit() {
+
+
+        var regxPhone = /^[7-9]\d{9}$/;
+        var mobileno = $("#mono").val();
+        if (regxPhone.test(mobileno) == false) {
+            swal("Invalid Mobile No");
+            return false
+        }
+
+
+
+        return true;
+
+}
+  {% endblock %}

@@ -1,0 +1,158 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+
+/* --------------------------scroll top-------------------------  */
+.scroll-top{
+    bottom: 25px;
+    cursor: pointer;
+    height: 50px;
+    position: fixed;
+    right: 25px;
+    text-align: center;
+    width: 50px;
+    z-index: 9999;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 30%;
+    background-color: #6BCCBA;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5)
+}
+
+.scroll-top i {
+    line-height: 50px;
+    color: #fff;
+    font-size: 25px;
+}
+
+.scroll-top.not-visible {
+bottom: -50px;
+visibility: hidden;
+opacity: 0;
+}
+
+.scroll-top:hover {
+background-color: #17232D;
+}
+
+
+
+.section-profile .btn{
+    background-color: white;
+    color:#17232D;
+    font-size: 16px;
+}
+.section-profile .btn:hover{
+    background-color: #17232D;
+    color:white;
+}
+.section-profile .h4
+{
+   font-size: 28px;
+   color: #17232D;
+}
+
+.section-profile
+{
+    background-color: #6BCCBA;
+    color:white;
+}
+
+
+.a-round{
+    width: 300px;
+    height: 300px;
+    border-radius: 100%;
+    margin: auto;
+    padding: 70px 0 20px;
+    margin-top: 10px;
+}
+.tusers{
+    border: 35px solid #cfefe0;
+    color: #008f4c;
+    text-align: center;
+}
+.a-counter{
+    font-size: 36px;
+    line-height: 100%;
+}
+
+.revenue{
+    border: 35px solid #fae0e1;
+    color: #ed1c24;
+    text-align: center;
+}
+.preq{
+    border: 35px solid #ffe5ce;
+    color: #fba153;
+    text-align: center;
+}
+
+.a-title{
+    font-size: 18px;
+    margin: 10px;
+}
+
+.section .section-heading{
+    font-size:48px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-transform: uppercase;
+    position: relative;
+     font-family: 'Sniglet', cursive !important;
+}
+
+.section .section-heading:after,
+.section .section-heading:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+}
+.section .section-heading:after {
+    height: 2px;
+    background-color: rgba(252, 92, 15, 0.46);
+    left: 25%;
+    right: 25%;
+}
+
+.section .section-heading:before {
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    background-color: #fc5c0f;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: -6px;
+    z-index: 9;
+    border-radius: 50%;
+}
+.section-myuser{
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("../../static/images/banner_top.jpg") fixed no-repeat;
+
+}
+.section-myuser .section-heading{
+     color: #fff;
+}
+.my-custom-scrollbar {
+    position: relative;
+    height: 250px;
+    overflow: auto;
+ }
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.title{
+    font-family: 'Arvo', serif;
+}
+
+th{
+    background-color: #17232D;
+    color: #17232D;
+}
+
+

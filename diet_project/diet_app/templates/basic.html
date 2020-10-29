@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+    <title>{% block title%} {% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    {% block ecss%}
+
+    {% endblock %}
+    <style>
+        body {
+            font-family: 'Acme', sans-serif;
+            background-color:white;
+        }
+
+        .mynav {
+             background-color: #17232D;
+            color:#6BCCBA;
+        }
+
+        .nav-link,
+        .dropdown-item,
+        .navbar-brand {
+            color: #6BCCBA !important;
+
+        }
+
+
+
+        .nav-item {
+
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        .links:hover {
+
+            display: inline-block;
+            border-bottom: 2px solid blue;
+            padding-bottom: 2px;
+
+        }
+        .nav-link:hover , .navbar-brand:hover{
+            color: #6BCCBA;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+
+        }
+        {% block css%}
+
+    {% endblock %}
+    </style>
+</head>
+
+<body>
+    <div class="header" >
+     <nav class="navbar navbar-expand-md  fixed-top bg-dark navbar-dark" style="background-color:#17232D !important">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">
+      {% load static %}
+        <img src="{% static 'images/1.png'%}" alt="Logo" style="width:26%;">
+        </a>
+
+  <!-- Toggler/collapsibe Button -->
+
+                    <button class="navbar-toggler animate__animated animate__fadeInRight "  style="margin-left:auto;margin-right:25px;margin-top: -40px;" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <i class="fa fa-bars" style="color: #6BCCBA;font-size: 24px;" aria-hidden="true"></i>
+            </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto" style="margin-right:40px; color:#6BCCBA;font-size: 18px;">
+     <li class="nav-item">
+                        <a class="nav-link" href="/"><span class="links">Home</span></a>
+                    </li>
+
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="/#plans"><span class="links">Plans</span></a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#dietitian"><span class="links">Dietitian</span></a>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#blog"><span class="links">Blog</span></a>
+                    </li>
+        
+      {% if user.is_authenticated %}
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                        <span class="links"> {{user}}</span>
+                                    </a>
+                                    {% if user.is_customer %}
+                                    <div class="dropdown-menu" style="background-color:#17232D">
+                                        <a class="dropdown-item" href="/userdashboard" style="color:#6BCCBA">My Profile </a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#changepassword" style="color:#6BCCBA">Change Password</a>
+                                        <a class="dropdown-item" href="/logout" style="color:#6BCCBA">Logout</a>
+
+                                    </div>
+                                    {% endif %}
+                                    {% if user.is_dietitian %}
+                                    <div class="dropdown-menu" style="background-color:#17232D">
+                                        <a class="dropdown-item" href="/dietitiandashboard" style="color:#6BCCBA">My Profile </a>
+                                        <a class="dropdown-item" href="/logout" style="color:#6BCCBA">Logout</a>
+
+                                    </div>
+                                    {% endif %}
+                                 </li>
+
+
+                  {% endif %}
+
+    </ul>
+  </div>
+</nav>
+
+
+    </div>
+    {% block body %}
+
+    {% endblock %}
+
+    <section class="section section-footer p-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-about text-center">
+
+                        <div class="h2 mb-2 mt-3">ABOUT SASTA DIET</div>
+                        {% load static %}
+                        <div class="footer-logo my-4">
+                            <img src="{% static 'images/4.png'%}" class="img-fluid rounded" alt="sasta diet" style="width:150px;height:100px">
+                        </div>
+                        <div class="">
+                            We are the best and affordable diet provider with full family support and Personalize experience provider in India.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-mid text-center">
+                        <div class="h2 mb-2 mt-3">Important Links</div>
+                        <ul class="mt-4">
+                            <a href="/#plans" style="color:#6BCCBA"><li>plans</li></a>
+                            <a href="/#blog" style="color:#6BCCBA"><li>Blogs</li></a>
+                           <a href="/#diatitian" style="color:#6BCCBA"> <li>Our Dietitians</li></a>
+                        </ul>
+                        <div class="d-flex justify-content-around mt-4">
+                            <i class="fa fa-whatsapp  fa-2x"></i>
+                            <i class="fa fa-instagram fa-2x"></i>
+                            <i class="fa fa-envelope fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="footer-contact text-center ">
+                        <div class="h2 mb-2 text-center mt-3">Contact Us</div>
+                        <form class="mt-4 mx-md-5" action="/contactus/" method="post">{% csrf_token %}
+
+                            <div class="row">
+                              <div class="col-md-6 mb-4">
+
+                                <!-- Name -->
+                                <input type="text" id="Cname" class="form-control" name="name" placeholder="Name" required>
+
+                              </div>
+                              <div class="col-md-6 mb-4">
+
+                                <!-- Email -->
+                                <input type="email" id="Cemail" class="form-control" name="email" placeholder="Email" required>
+
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12 mb-4">
+
+                                <!-- Subject -->
+                                <input type="text" id="Csubject" class="form-control" name="subject" placeholder="Subject" required>
+
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+
+                                <div class="form-group mb-4">
+                                  <textarea class="form-control rounded" id="Cmessage" rows="3" name="message" placeholder="How can we help?" required></textarea>
+                                </div>
+
+                                <div class="text-center">
+                                  <button type="submit" class="btn">Submit</button>
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    {% block escript %}
+
+    {% endblock %}
+    <script>
+    {% block script %}
+
+    {% endblock %}
+    </script>
+
+</body>
+
+</html>

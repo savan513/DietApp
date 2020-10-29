@@ -1,0 +1,53 @@
+{% extends 'basic.html' %}
+{% block title %} SastaDIet Tracker{% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block body %}
+<div class="container" style="margin-top:15%">
+    {% if response.RESPCODE == '01' %}
+    <div class="row">
+        <div class="col-12 text-center">
+
+            <h5 style="color:#6BCCBA;font-size:26px;">Transaction id : {{response.TXNID}}</h5>
+        </div>
+        <div class="col-12 text-center">
+
+            <h5 style="color:#6BCCBA;font-size:24px;">Transaction Amount : {{response.TXNAMOUNT}}</h5>
+        </div>
+
+    </div>
+
+
+    <div class="col d-flex flex-column" >
+
+
+
+            <div class="text-center">
+                {% load static %}
+                <img src="{% static 'images/payment-successful.jpg'%}" style="width:70%">
+            </div>
+        {% if is_planchange %}
+             <a href="/userdashboard" class="btn btn-success">Goto Dashboard</a>
+        {% elif is_updateplan %}
+            <a href="/checkfilleddata" class="btn btn-success">Check Your Details</a>
+
+        {% else %}
+
+            <a href="/filluserdata" class="btn btn-success">Please Fill Form of Your Details</a>
+        {% endif %}
+        {% else %}
+        <div class="text-center">
+            {% load static %}
+                <img src="{% static 'images/payment_failed.jpg'%}" style="width:70%">
+            </div>
+            <a href="/" class="btn btn-warning">Please Try Again</a>
+        {% endif%}
+
+    </div>
+
+</div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}
